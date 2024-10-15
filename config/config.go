@@ -1,8 +1,9 @@
 package config
 
 type Config struct {
-	Dev             bool `json:"dev" yaml:"dev" mapstructure:"dev"`
-	SysPort         int  `json:"sys_port" yaml:"sys_port" mapstructure:"sys_port"`
+	Template        string `json:"template" yaml:"template" mapstructure:"template"`
+	Dev             bool   `json:"dev" yaml:"dev" mapstructure:"dev"`
+	SysPort         int    `json:"sys_port" yaml:"sys_port" mapstructure:"sys_port"`
 	*DataBaseConfig `yaml:"data_base" json:"data_base" mapstructure:"data_base"`
 }
 

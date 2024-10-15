@@ -9,10 +9,14 @@ import (
 func InitRoutes() *gin.Engine {
 	r := gin.Default()
 	r.Static("/static", "./static")
-	r.LoadHTMLGlob("templates/**/*")
-	r.GET("/", func(context *gin.Context) {
-		context.HTML(http.StatusOK, "admin/login.html", nil)
-	})
+	backend := r.Group("/admin")
+	{
+
+		backend.GET("", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "admin/login.html", nil)
+		})
+	}
+
 	api := r.Group("/admin")
 	{
 		apiRouter(api)
