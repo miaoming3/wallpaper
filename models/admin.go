@@ -3,9 +3,14 @@ package models
 import (
 	"fmt"
 	"github.com/miaoming3/wallpaper/global"
+	"gorm.io/gorm"
 )
 
 type Admin struct {
+	gorm.Model
+	Password string
+	Username string
+	Status   uint
 }
 
 func (admin *Admin) TableName() string {

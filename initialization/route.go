@@ -1,30 +1,16 @@
 package initialization
 
 import (
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	v1 "github.com/miaoming3/wallpaper/api/v1"
-	"net/http"
+	"github.com/miaoming3/wallpaper/global"
 )
 
 func InitRoutes() *gin.Engine {
 	r := gin.Default()
+	r.Use(gin.Recovery(), sessions.Sessions("session", cookie.NewStore([]byte("1245"))))
 	r.Static("/static", "./static")
-	backend := r.Group("/admin")
-	{
-
-		backend.GET("", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "admin/login.html", nil)
-		})
-	}
-
-	api := r.Group("/admin")
-	{
-		apiRouter(api)
-	}
-
+	r.LoadHTMLGlob(global.SysConfig.Template)
 	return r
-}
-
-func apiRouter(r *gin.RouterGroup) {
-	r.POST("/login", v1.Login)
 }
