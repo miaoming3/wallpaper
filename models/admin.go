@@ -11,6 +11,7 @@ type Admin struct {
 	Password string
 	Username string
 	Status   uint
+	Uid      string
 }
 
 func (admin *Admin) TableName() string {
