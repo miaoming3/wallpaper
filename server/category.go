@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/miaoming3/wallpaper/controller/dto"
 	"github.com/miaoming3/wallpaper/dao"
@@ -33,10 +32,7 @@ func (cg *CategoryServer) IndexServer(c *gin.Context, data *dto.CategoryIndex) *
 		condition["pid"] = data.Pid
 		pid, _ = strconv.Atoi(data.Pid)
 	}
-
-	fmt.Println(condition)
-
-	categories, err := dao.NewCategoryDao().FindByAll(condition, data.Page, data.PageSize)
+	categories, err := dao.NewCategoryDao().FindByAll(condition, 0, 0)
 	if err != nil {
 		return response.ApiError(response.ACCESSERROR, err)
 	}
@@ -44,8 +40,13 @@ func (cg *CategoryServer) IndexServer(c *gin.Context, data *dto.CategoryIndex) *
 	if err != nil {
 		return response.ApiError(response.ACCESSERROR, err)
 	}
-	return response.ApiPageSuccess(treeCategory(categories, uint(pid)), total, data.Page, data.PageSize, total/int64(data.PageSize) >= int64(data.Page))
+	return response.ApiPageSuccess(treeCategory(categories, uint(pid)), total, 0, 0, false)
 
+}
+
+func (cg *CategoryServer) CreateServer(c *gin.Context, data *dto.SaveCategory) *response.ApiResponse {
+
+	return response.ApiSuccess(nil)
 }
 
 func treeCategory(categories []models.Category, pid uint) []*dto2.CategoryListResponse {

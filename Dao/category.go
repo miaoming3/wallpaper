@@ -16,14 +16,13 @@ func NewCategoryDao() *CategoryDao {
 
 func (dao *CategoryDao) FindByAll(condition interface{}, page int, pageSize int) ([]models.Category, error) {
 	var categories []models.Category
-	if pageSize == 0 {
-		pageSize = 20
+
+	query := dao.Model(models.Category{}).Where(condition)
+	if page > 0 && pageSize > 0 {
+		offset := (page - 1) * pageSize
+		query.Offset(offset).Limit(pageSize)
 	}
-	if page < 1 {
-		page = 1
-	}
-	offset := (page - 1) * pageSize
-	if err := dao.Model(models.Category{}).Where(condition).Offset(offset).Limit(pageSize).Find(&categories).Error; err != nil {
+	if err := query.Find(&categories).Error; err != nil {
 		return nil, err
 	}
 	return categories, nil

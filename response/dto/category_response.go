@@ -6,5 +6,5 @@ type CategoryListResponse struct {
 	Pid     uint                    `json:"pid"`
 	Status  uint                    `json:"status"`
 	Sort    uint                    `json:"sort"`
-	Childer []*CategoryListResponse `json:"childer"`
+	Childer []*CategoryListResponse `json:"childer,omitempty"`
 }

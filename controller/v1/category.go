@@ -23,5 +23,15 @@ func (cg *CategoryController) Index(c *gin.Context) {
 		response.Response(c, response.ApiError(response.CLIENTERROR, err))
 		return
 	}
+
 	response.Response(c, cg.Server.IndexServer(c, &searchData))
+}
+
+func (cg *CategoryController) Save(c *gin.Context) {
+	var saveCategory dto.SaveCategory
+	if err := c.ShouldBind(&saveCategory); err != nil {
+		response.Response(c, response.ApiError(response.CLIENTERROR, err))
+		return
+	}
+	response.Response(c, cg.Server.CreateServer(c, &saveCategory))
 }

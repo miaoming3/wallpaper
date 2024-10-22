@@ -6,11 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 	v1 "github.com/miaoming3/wallpaper/controller/v1"
 	"github.com/miaoming3/wallpaper/global"
+	"github.com/miaoming3/wallpaper/middleware"
 )
 
 func InitRoutes() *gin.Engine {
 	r := gin.Default()
-	r.Use(gin.Recovery(), sessions.Sessions("session", cookie.NewStore([]byte("1245"))))
+	r.Use(gin.Recovery(), middleware.LoadPageMiddleware(), sessions.Sessions("session", cookie.NewStore([]byte("1245"))))
 	r.Static("/static", "./static")
 	r.LoadHTMLGlob(global.SysConfig.Template)
 	api := r.Group("/api")
