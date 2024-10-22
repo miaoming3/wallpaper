@@ -44,9 +44,83 @@ func (cg *CategoryServer) IndexServer(c *gin.Context, data *dto.CategoryIndex) *
 
 }
 
+func (cg *CategoryServer) UpdateServer(c *gin.Context, data *dto.UpdateCategory) *response.ApiResponse {
+	if data.Pid == data.ID {
+		return response.ApiError(response.CategoryParentError, nil)
+	}
+	condition := map[string]interface{}{"id": data.ID}
+	total, err := dao.NewCategoryDao().FindByTotal(condition)
+	if err != nil {
+		return response.ApiError(response.ACCESSERROR, err)
+	}
+	if total <= 0 {
+		return response.ApiError(response.NotFoundError, err)
+	}
+
+	ok, err := dao.NewCategoryDao().UniqueFiled("name", data.Name, data.ID)
+	if err != nil {
+		return response.ApiError(response.ACCESSERROR, err)
+	}
+	if !ok {
+		return response.ApiError(response.CategoryNameErr, err)
+	}
+
+	err = dao.NewCategoryDao().UpdateCategory(data)
+	if err != nil {
+		return response.ApiError(response.SaveCategoryErr, err)
+	}
+	return response.ApiSuccess(nil)
+
+}
+
 func (cg *CategoryServer) CreateServer(c *gin.Context, data *dto.SaveCategory) *response.ApiResponse {
+	ok, err := dao.NewCategoryDao().UniqueFiled("name", data.Name, 0)
+	if err != nil {
+		return response.ApiError(response.ACCESSERROR, err)
+	}
+	if !ok {
+		return response.ApiError(response.CategoryNameErr, err)
+	}
+	condition := map[string]interface{}{"id": data.Pid}
+	total, err := dao.NewCategoryDao().FindByTotal(condition)
+	if err != nil {
+		return response.ApiError(response.ACCESSERROR, err)
+	}
+	if data.Pid > 0 && total <= 0 {
+		return response.ApiError(response.NotFoundPid, err)
+	}
+
+	err = dao.NewCategoryDao().SaveCategory(data)
+	if err != nil {
+		return response.ApiError(response.SaveCategoryErr, err)
+	}
+	return response.ApiSuccess(nil)
+}
+
+func (cg *CategoryServer) DeleteServer(c *gin.Context, data *dto.DeleteCategory) *response.ApiResponse {
+	condition := map[string]interface{}{"pid": data.ID}
+	total, err := dao.NewCategoryDao().FindByTotal(condition)
+	if err != nil {
+		return response.ApiError(response.ACCESSERROR, err)
+	}
+	if total > 0 {
+		return response.ApiError(response.FoundSUCCESS, err)
+	}
+	condition = map[string]interface{}{"id": data.ID}
+	total, err = dao.NewCategoryDao().FindByTotal(condition)
+	if err != nil {
+		return response.ApiError(response.ACCESSERROR, err)
+	}
+	if total <= 0 {
+		return response.ApiError(response.NotFoundError, err)
+	}
+
+	if err = dao.NewCategoryDao().DeleteCategory(data); err != nil {
+		return response.ApiError(response.DeleteError, err)
+	}
 
 	return response.ApiSuccess(nil)
+
 }
 
 func treeCategory(categories []models.Category, pid uint) []*dto2.CategoryListResponse {

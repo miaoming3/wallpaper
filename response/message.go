@@ -7,6 +7,15 @@ const (
 	CAPTCHAERROR uint = 1100
 	//管理员错误码 1300 - 1600
 	ADMINORPASSWORD uint = 1300
+
+	//分类信息错误
+	CategoryNameErr     uint = 1500
+	SaveCategoryErr     uint = 1501
+	NotFoundPid         uint = 1502
+	CategoryParentError uint = 1503
+	NotFoundError       uint = 1504
+	FoundSUCCESS        uint = 1505
+	DeleteError         uint = 1506
 )
 
 var messageString = map[uint]string{
@@ -14,4 +23,12 @@ var messageString = map[uint]string{
 	CLIENTERROR:     "客户端错误",
 	CAPTCHAERROR:    "验证码服务",
 	ADMINORPASSWORD: "用户名或密码错误",
+
+	CategoryNameErr:     "分类名已经存在",
+	SaveCategoryErr:     "保存失败",
+	NotFoundPid:         "访问错误",
+	CategoryParentError: "父级id不能为自己",
+	NotFoundError:       "查询数据不存在",
+	FoundSUCCESS:        "当前分类存在子分类",
+	DeleteError:         "删除分类失败",
 }

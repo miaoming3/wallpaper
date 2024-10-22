@@ -36,5 +36,8 @@ func categoryRouter(r *gin.RouterGroup) {
 	v1Router := r.Group("/v1")
 	{
 		v1Router.GET("/category/index", categoryController.Index)
+		v1Router.POST("category/save", categoryController.Save)
+		v1Router.PUT("/category/update", categoryController.Update)
+		v1Router.DELETE("/category/del", categoryController.Delete)
 	}
 }
