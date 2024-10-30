@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	v1 "github.com/miaoming3/wallpaper/controller/v1"
 	docs "github.com/miaoming3/wallpaper/docs"
-	"github.com/miaoming3/wallpaper/global"
 	"github.com/miaoming3/wallpaper/middleware"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -18,7 +17,7 @@ func InitRoutes() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.Use(gin.Recovery(), middleware.LoadPageMiddleware(), sessions.Sessions("session", cookie.NewStore([]byte("1245"))))
 	r.Static("/static", "./static")
-	r.LoadHTMLGlob(global.SysConfig.Template)
+	//r.LoadHTMLGlob(global.SysConfig.Template)
 	api := r.Group("/api")
 	{
 		adminRouter(api)

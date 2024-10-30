@@ -1,7 +1,6 @@
 package server
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/miaoming3/wallpaper/controller/dto"
 	"github.com/miaoming3/wallpaper/dao"
 	"github.com/miaoming3/wallpaper/models"
@@ -10,14 +9,21 @@ import (
 	"strconv"
 )
 
+type CategoryService interface {
+	IndexServer(data *dto.CategoryIndex) *response.ApiResponse
+	UpdateServer(data *dto.UpdateCategory) *response.ApiResponse
+	CreateServer(data *dto.SaveCategory) *response.ApiResponse
+	DeleteServer(data *dto.DeleteCategory) *response.ApiResponse
+}
+
 type CategoryServer struct {
 }
 
-func NewCategoryServer() *CategoryServer {
+func NewCategoryServer() CategoryService {
 	return &CategoryServer{}
 }
 
-func (cg *CategoryServer) IndexServer(c *gin.Context, data *dto.CategoryIndex) *response.ApiResponse {
+func (cs CategoryServer) IndexServer(data *dto.CategoryIndex) *response.ApiResponse {
 	condition := map[string]interface{}{
 		"status": "1",
 	}
@@ -44,7 +50,7 @@ func (cg *CategoryServer) IndexServer(c *gin.Context, data *dto.CategoryIndex) *
 
 }
 
-func (cg *CategoryServer) UpdateServer(c *gin.Context, data *dto.UpdateCategory) *response.ApiResponse {
+func (cs CategoryServer) UpdateServer(data *dto.UpdateCategory) *response.ApiResponse {
 	if data.Pid == data.ID {
 		return response.ApiError(response.CategoryParentError, nil)
 	}
@@ -73,7 +79,7 @@ func (cg *CategoryServer) UpdateServer(c *gin.Context, data *dto.UpdateCategory)
 
 }
 
-func (cg *CategoryServer) CreateServer(c *gin.Context, data *dto.SaveCategory) *response.ApiResponse {
+func (cs CategoryServer) CreateServer(data *dto.SaveCategory) *response.ApiResponse {
 	ok, err := dao.NewCategoryDao().UniqueFiled("name", data.Name, 0)
 	if err != nil {
 		return response.ApiError(response.ACCESSERROR, err)
@@ -97,7 +103,7 @@ func (cg *CategoryServer) CreateServer(c *gin.Context, data *dto.SaveCategory) *
 	return response.ApiSuccess(nil)
 }
 
-func (cg *CategoryServer) DeleteServer(c *gin.Context, data *dto.DeleteCategory) *response.ApiResponse {
+func (cs CategoryServer) DeleteServer(data *dto.DeleteCategory) *response.ApiResponse {
 	condition := map[string]interface{}{"pid": data.ID}
 	total, err := dao.NewCategoryDao().FindByTotal(condition)
 	if err != nil {

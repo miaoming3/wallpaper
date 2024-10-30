@@ -5,6 +5,7 @@ import (
 	"github.com/miaoming3/wallpaper/controller/dto"
 	"github.com/miaoming3/wallpaper/global"
 	dto2 "github.com/miaoming3/wallpaper/response/dto"
+	"github.com/miaoming3/wallpaper/utils"
 	"time"
 
 	"github.com/miaoming3/wallpaper/dao"
@@ -29,12 +30,13 @@ func checkCaptcha(id string, captcha string) (bool, error) {
 	return true, nil
 }
 
-func checkPassword(hash_password string, password string) bool {
-	if err := bcrypt.CompareHashAndPassword([]byte(hash_password), []byte(password)); err != nil {
+func checkPassword(passwordHash string, password string) bool {
+	if err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(password)); err != nil {
 		return false
 	}
 	return true
 }
+
 func (as *AdminServer) LoginServer(c *gin.Context, data *dto.AdminLoginData) *response.ApiResponse {
 	ok, err := checkCaptcha(data.CaptchaID, data.Captcha)
 	if err != nil || !ok {
@@ -45,9 +47,8 @@ func (as *AdminServer) LoginServer(c *gin.Context, data *dto.AdminLoginData) *re
 	if err != nil || reflect.DeepEqual(admin, models.Admin{}) || !checkPassword(admin.Password, data.Password) {
 		return response.ApiError(response.ADMINORPASSWORD, err)
 	}
-
 	return response.ApiSuccess(dto2.AdminLoginResponse{
-		Token:      "123456",
+		Token:      utils.GenerateRandomStringMath(16),
 		UID:        admin.Uid,
 		Expression: time.Now().Format(time.DateTime),
 		Username:   admin.Username,
