@@ -121,6 +121,89 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/menu/del": {
+            "delete": {
+                "description": "删除菜单",
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "删除菜单",
+                "parameters": [
+                    {
+                        "description": "删除菜单参数",
+                        "name": "DeleteMenu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DeleteMenu"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/menu/index": {
+            "get": {
+                "description": "获取菜单列表",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "菜单列表",
+                "responses": {}
+            }
+        },
+        "/menu/save": {
+            "post": {
+                "description": "创建菜单",
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "创建菜单",
+                "parameters": [
+                    {
+                        "description": "创建菜单",
+                        "name": "SaveMenu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SaveMenu"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/menu/update": {
+            "put": {
+                "description": "修改菜单",
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "修改菜单",
+                "parameters": [
+                    {
+                        "description": "修改菜单",
+                        "name": "UpdateMenu",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateMenu"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.ApiResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -147,6 +230,17 @@ const docTemplate = `{
             }
         },
         "dto.DeleteCategory": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.DeleteMenu": {
             "type": "object",
             "required": [
                 "id"
@@ -184,6 +278,9 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.SaveMenu": {
+            "type": "object"
+        },
         "dto.UpdateCategory": {
             "type": "object",
             "required": [
@@ -212,6 +309,17 @@ const docTemplate = `{
                             "$ref": "#/definitions/models.CategoryStatus"
                         }
                     ]
+                }
+            }
+        },
+        "dto.UpdateMenu": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
                 }
             }
         },

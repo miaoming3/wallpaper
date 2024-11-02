@@ -8,7 +8,7 @@ import (
 )
 
 type CategoryController struct {
-	server.CategoryService
+	server.BaseServiceInterface
 }
 
 // NewCategoryController

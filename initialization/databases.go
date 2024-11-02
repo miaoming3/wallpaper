@@ -45,5 +45,8 @@ func InitDataBases() {
 }
 
 func autoMigrate() {
-	_ = global.DbClient.AutoMigrate(&models.Admin{}, &models.Category{})
+	_ = global.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
+		&models.Admin{}, &models.Category{}, &models.Users{}, &models.Image{},
+		&models.Tags{}, &models.ImageTags{},
+	)
 }

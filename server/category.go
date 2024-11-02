@@ -9,21 +9,19 @@ import (
 	"strconv"
 )
 
-type CategoryService interface {
-	IndexServer(data *dto.CategoryIndex) *response.ApiResponse
-	UpdateServer(data *dto.UpdateCategory) *response.ApiResponse
-	CreateServer(data *dto.SaveCategory) *response.ApiResponse
-	DeleteServer(data *dto.DeleteCategory) *response.ApiResponse
-}
-
 type CategoryServer struct {
 }
 
-func NewCategoryServer() CategoryService {
+func NewCategoryServer() BaseServiceInterface {
 	return &CategoryServer{}
 }
 
-func (cs CategoryServer) IndexServer(data *dto.CategoryIndex) *response.ApiResponse {
+func (cs *CategoryServer) IndexServer(di interface{}) *response.ApiResponse {
+	data, ok := di.(*dto.CategoryIndex)
+	if !ok {
+		return response.ApiError(response.ACCESSERROR, nil)
+	}
+
 	condition := map[string]interface{}{
 		"status": "1",
 	}
@@ -50,7 +48,12 @@ func (cs CategoryServer) IndexServer(data *dto.CategoryIndex) *response.ApiRespo
 
 }
 
-func (cs CategoryServer) UpdateServer(data *dto.UpdateCategory) *response.ApiResponse {
+func (cs *CategoryServer) UpdateServer(di interface{}) *response.ApiResponse {
+
+	data, ok := di.(*dto.UpdateCategory)
+	if !ok {
+		return response.ApiError(response.ACCESSERROR, nil)
+	}
 	if data.Pid == data.ID {
 		return response.ApiError(response.CategoryParentError, nil)
 	}
@@ -63,7 +66,7 @@ func (cs CategoryServer) UpdateServer(data *dto.UpdateCategory) *response.ApiRes
 		return response.ApiError(response.NotFoundError, err)
 	}
 
-	ok, err := dao.NewCategoryDao().UniqueFiled("name", data.Name, data.ID)
+	ok, err = dao.NewCategoryDao().UniqueFiled("name", data.Name, data.ID)
 	if err != nil {
 		return response.ApiError(response.ACCESSERROR, err)
 	}
@@ -79,7 +82,11 @@ func (cs CategoryServer) UpdateServer(data *dto.UpdateCategory) *response.ApiRes
 
 }
 
-func (cs CategoryServer) CreateServer(data *dto.SaveCategory) *response.ApiResponse {
+func (cs *CategoryServer) CreateServer(di interface{}) *response.ApiResponse {
+	data, ok := di.(*dto.SaveCategory)
+	if !ok {
+		return response.ApiError(response.ACCESSERROR, nil)
+	}
 	ok, err := dao.NewCategoryDao().UniqueFiled("name", data.Name, 0)
 	if err != nil {
 		return response.ApiError(response.ACCESSERROR, err)
@@ -103,7 +110,11 @@ func (cs CategoryServer) CreateServer(data *dto.SaveCategory) *response.ApiRespo
 	return response.ApiSuccess(nil)
 }
 
-func (cs CategoryServer) DeleteServer(data *dto.DeleteCategory) *response.ApiResponse {
+func (cs *CategoryServer) DeleteServer(di interface{}) *response.ApiResponse {
+	data, ok := di.(*dto.DeleteCategory)
+	if !ok {
+		return response.ApiError(response.ACCESSERROR, nil)
+	}
 	condition := map[string]interface{}{"pid": data.ID}
 	total, err := dao.NewCategoryDao().FindByTotal(condition)
 	if err != nil {

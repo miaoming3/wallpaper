@@ -32,3 +32,16 @@ func (ac *AdminController) Login(c *gin.Context) {
 	}
 	response.Response(c, ac.LoginServer(c, &requestLogin))
 }
+
+func (ac *AdminController) Index(c *gin.Context) {
+
+}
+func (ac *AdminController) Save(c *gin.Context) {
+
+}
+func (ac *AdminController) Update(c *gin.Context) {
+
+}
+func (ac *AdminController) Delete(c *gin.Context) {
+
+}
