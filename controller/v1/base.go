@@ -28,5 +28,6 @@ func NewBaseController() *BaseController {
 		TagsController:     NewTagsController(),
 		GradeController:    NewGradeController(),
 		UserController:     NewUserController(),
+		ImageController:    NewImageController(),
 	}
 }

@@ -1,22 +1,22 @@
 package dto
 
 type ImageSearch struct {
-	Name        string `json:"name" from:"name" query:"name"`
-	IsRecommend uint   `json:"is_recommend" from:"is_recommend" query:"is_recommend"`
-	Username    string `json:"username" from:"username" query:"username"`
-	TagsID      uint   `json:"tags_id" from:"tags_id" query:"tags_id"`
-	CID         uint   `json:"cid" from:"cid" query:"cid"`
+	Name        string `json:"name" form:"name" query:"name" `
+	IsRecommend uint   `json:"is_recommend" form:"is_recommend" query:"is_recommend"`
+	Username    string `json:"username" form:"username" query:"username"`
+	TagsID      uint   `json:"tags_id" form:"tags_id" query:"tags_id" url:"tags_id"`
+	CID         uint   `json:"cid" form:"cid" query:"cid"`
 }
 
 type ImageSave struct {
-	Name        string           `json:"name" from:"name"`
-	Url         string           `json:"url" from:"url" `
-	Type        string           `json:"type" from:"type"`
-	CID         uint             `json:"cid" from:"cid"`
-	UID         uint             `json:"uid" from:"uid"`
-	TagsID      []ImagesTagsData `json:"tags_id" from:"tags_id"`
-	IsRecommend uint             `json:"is_recommend" from:"is_recommend"`
-	IsShow      uint8            `json:"is_show" from:"is_show"`
+	Name        string           `json:"name" form:"name"`
+	Url         string           `json:"url" form:"url" `
+	Type        string           `json:"type" form:"type"`
+	CID         uint             `json:"cid" form:"cid"`
+	UID         uint             `json:"uid" form:"uid"`
+	TagsID      []ImagesTagsData `json:"tags_id" form:"tags_id"`
+	IsRecommend uint             `json:"is_recommend" form:"is_recommend"`
+	IsShow      uint8            `json:"is_show" form:"is_show"`
 }
 
 type ImagesTagsData struct {

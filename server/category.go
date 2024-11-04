@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/miaoming3/wallpaper/controller/dto"
 	"github.com/miaoming3/wallpaper/dao"
 	"github.com/miaoming3/wallpaper/models"
@@ -16,7 +17,7 @@ func NewCategoryServer() BaseServiceInterface {
 	return &CategoryServer{}
 }
 
-func (cs *CategoryServer) IndexServer(di interface{}) *response.ApiResponse {
+func (cs *CategoryServer) IndexServer(c *gin.Context, di interface{}) *response.ApiResponse {
 	data, ok := di.(*dto.CategoryIndex)
 	if !ok {
 		return response.ApiError(response.ACCESSERROR, nil)

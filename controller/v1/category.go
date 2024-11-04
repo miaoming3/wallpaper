@@ -33,7 +33,7 @@ func (cg *CategoryController) Index(c *gin.Context) {
 		return
 	}
 
-	response.Response(c, cg.IndexServer(&searchData))
+	response.Response(c, cg.IndexServer(c, &searchData))
 }
 
 // Save

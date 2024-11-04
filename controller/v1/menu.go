@@ -28,7 +28,7 @@ func (mc *MenuController) Index(c *gin.Context) {
 		return
 	}
 
-	response.Response(c, mc.IndexServer(&index))
+	response.Response(c, mc.IndexServer(c, &index))
 }
 
 // Save

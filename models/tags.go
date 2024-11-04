@@ -18,7 +18,7 @@ func (model *Tags) TableName() string {
 
 type ImageTags struct {
 	ImageID uint `gorm:"primaryKey;column:image_id"`
-	TagID   uint `gorm:"primaryKey;column:tag_id"`
+	TagsID  uint `gorm:"primaryKey;column:tags_id"`
 	// 通常不需要其他字段，但如果有额外信息可以添加
 }
 

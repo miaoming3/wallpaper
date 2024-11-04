@@ -122,6 +122,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/image/index": {
+            "get": {
+                "description": "获取图片列表",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图片管理"
+                ],
+                "summary": "图片列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "name": "cid",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "is_recommend",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "name": "tags_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "username",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/menu/del": {
             "delete": {
                 "description": "删除菜单",

@@ -40,11 +40,9 @@ func setupRoutes(r *gin.Engine, controller *v1.BaseController) {
 
 func registerRoutes(r *gin.RouterGroup, prefix string, controller interface{}) {
 	if crudController, ok := controller.(v1.BaseControllerInterface); ok {
-
 		if adminController, ok := controller.(*v1.AdminController); ok {
 			r.POST(fmt.Sprintf("/%s/login", prefix), adminController.Login)
 		}
-
 		r.GET(fmt.Sprintf("/%s/index", prefix), crudController.Index)
 		r.POST(fmt.Sprintf("/%s/save", prefix), crudController.Save)
 		r.PUT(fmt.Sprintf("/%s/update", prefix), crudController.Update)

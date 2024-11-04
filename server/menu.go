@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/miaoming3/wallpaper/response"
 )
 
@@ -11,7 +12,7 @@ func NewMenuServe() BaseServiceInterface {
 	return &MenuServer{}
 }
 
-func (ms *MenuServer) IndexServer(di interface{}) *response.ApiResponse {
+func (ms *MenuServer) IndexServer(c *gin.Context, di interface{}) *response.ApiResponse {
 
 	return response.ApiSuccess(nil)
 }

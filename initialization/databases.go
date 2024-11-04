@@ -6,6 +6,7 @@ import (
 	"github.com/miaoming3/wallpaper/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
 	"log"
 	"os"
 	"time"
@@ -27,6 +28,9 @@ func InitDataBases() {
 				ParameterizedQueries:      false,       // Don't include params in the SQL log
 				Colorful:                  false,       // Disable color
 			}),
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix: baseConfig.Prefix,
+		},
 	})
 	if err != nil {
 		log.Panicf("databases content err : %v", err)
