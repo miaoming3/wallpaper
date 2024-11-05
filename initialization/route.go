@@ -2,8 +2,6 @@ package initialization
 
 import (
 	"fmt"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	v1 "github.com/miaoming3/wallpaper/controller/v1"
 	docs "github.com/miaoming3/wallpaper/docs"
@@ -16,7 +14,7 @@ func InitRoutes() *gin.Engine {
 	r := gin.Default()
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	r.Use(gin.Recovery(), middleware.LoadPageMiddleware(), sessions.Sessions("session", cookie.NewStore([]byte("1245"))))
+	r.Use(gin.Recovery(), middleware.LoadPageMiddleware())
 	r.Static("/static", "./static")
 	//r.LoadHTMLGlob(global.SysConfig.Template)
 	baseController := v1.NewBaseController()

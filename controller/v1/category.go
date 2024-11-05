@@ -40,15 +40,17 @@ func (cg *CategoryController) Index(c *gin.Context) {
 // @Summary 创建分类
 // @Tags 分类管理
 // @Description 创建分类
-// @Param saveCategory body dto.SaveCategory true "Category data to save"
+// @Accept json,application/x-www-form-urlencoded
+// @Produce application/json
+// @Param saveCategory body dto.SaveCategory true "保存分类参数" // JSON 请求体
 // @Router /category/save [post]
 func (cg *CategoryController) Save(c *gin.Context) {
-
 	var saveCategory dto.SaveCategory
 	if err := c.ShouldBind(&saveCategory); err != nil {
 		response.Response(c, response.ApiError(response.CLIENTERROR, err))
 		return
 	}
+
 	response.Response(c, cg.CreateServer(&saveCategory))
 }
 
@@ -61,6 +63,7 @@ func (cg *CategoryController) Save(c *gin.Context) {
 // @Router /category/update [put]
 func (cg *CategoryController) Update(c *gin.Context) {
 	var updateCategory dto.UpdateCategory
+
 	if err := c.ShouldBind(&updateCategory); err != nil {
 		response.Response(c, response.ApiError(response.CLIENTERROR, err))
 		return

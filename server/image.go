@@ -19,21 +19,24 @@ func (is *ImageServer) IndexServer(c *gin.Context, di interface{}) *response.Api
 	if !ok {
 		return response.ApiError(response.ACCESSERROR, nil)
 	}
-	condition := make(map[string]interface{})
+	condition := dao.NewQueryOption()
+	condition.AddPreload("Category", nil)
+	condition.AddPreload("User", nil)
+	condition.AddPreload("Tags", nil)
 	if data.CID != 0 {
-		condition["cid"] = data.CID
+		condition.AddCondition("cid = ?", data.CID)
 	}
 	if data.Username != "" {
-		condition["username like ?"] = "%" + data.Username + "%"
+		condition.AddCondition("username", "%"+data.Username+"%")
 	}
 	if data.Name != "" {
-		condition["name like ?"] = "%" + data.Name + "%"
+		condition.AddCondition("name like ?", "%"+data.Name+"%")
 	}
 	if data.TagsID > 0 {
-		condition["tags_id"] = data.TagsID
+		condition.AddCondition("tags_id", data.TagsID)
 	}
 	if data.IsRecommend > 0 {
-		condition["is_recommend"] = data.IsRecommend
+		condition.AddCondition("is_recommend = ?", data.IsRecommend)
 	}
 	page := c.GetInt("page")
 	pageSize := c.GetInt("pageSize")

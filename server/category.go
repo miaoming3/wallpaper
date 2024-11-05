@@ -23,21 +23,22 @@ func (cs *CategoryServer) IndexServer(c *gin.Context, di interface{}) *response.
 		return response.ApiError(response.ACCESSERROR, nil)
 	}
 
-	condition := map[string]interface{}{
-		"status": "1",
-	}
+	condition := dao.NewQueryOption()
+
 	if data.Name != "" {
-		condition["name LIKE ?"] = "%" + data.Name + "%"
+		condition.AddCondition("name LIKE ? ", "%"+data.Name+"%")
 	}
-	if data.Status != "" {
-		condition["status"] = data.Status
+	if data.Status == "" {
+		data.Status = "1"
 	}
+	condition.AddCondition("status = ?", data.Status)
 	pid := 0
 	if data.Pid != "" {
-		condition["pid"] = data.Pid
+		condition.AddCondition("pid = ?", data.Pid)
 		pid, _ = strconv.Atoi(data.Pid)
 	}
-	categories, err := dao.NewCategoryDao().FindByAll(condition, 0, 0)
+
+	categories, err := dao.NewCategoryDao().FindByAll(condition)
 	if err != nil {
 		return response.ApiError(response.ACCESSERROR, err)
 	}

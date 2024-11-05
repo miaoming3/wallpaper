@@ -2,25 +2,29 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/controller/dto"
-	"github.com/miaoming3/wallpaper/response"
+	"strconv"
 )
 
 func LoadPageMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var commonPage dto.Page
-		if err := c.ShouldBind(&commonPage); err != nil {
-			response.Response(c, response.ApiError(response.CLIENTERROR, err))
-			return
+		page := 1
+		if pageString, exists := c.GetQuery("page"); exists {
+			page, _ = strconv.Atoi(pageString)
+			if page <= 0 {
+				page = 1
+			}
+
 		}
-		if commonPage.PageSize == 0 {
-			commonPage.PageSize = 20
+		pageSize := 20
+		if pageString, exists := c.GetQuery("pageSize"); exists {
+			pageSize, _ = strconv.Atoi(pageString)
+			if pageSize <= 0 {
+				pageSize = 20
+			}
+
 		}
-		if commonPage.Page < 1 {
-			commonPage.Page = 1
-		}
-		c.Set("page", commonPage.Page)
-		c.Set("pageSize", commonPage.PageSize)
+		c.Set("page", page)
+		c.Set("pageSize", pageSize)
 		c.Next()
 	}
 

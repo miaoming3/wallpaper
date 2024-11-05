@@ -76,13 +76,20 @@ const docTemplate = `{
         "/category/save": {
             "post": {
                 "description": "创建分类",
+                "consumes": [
+                    "application/json",
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
                 "tags": [
                     "分类管理"
                 ],
                 "summary": "创建分类",
                 "parameters": [
                     {
-                        "description": "Category data to save",
+                        "description": "保存分类参数",
                         "name": "saveCategory",
                         "in": "body",
                         "required": true,
@@ -309,12 +316,8 @@ const docTemplate = `{
                     "default": 50
                 },
                 "status": {
-                    "default": 1,
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.CategoryStatus"
-                        }
-                    ]
+                    "type": "integer",
+                    "default": 1
                 }
             }
         },
@@ -343,12 +346,8 @@ const docTemplate = `{
                     "default": 50
                 },
                 "status": {
-                    "default": 1,
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.CategoryStatus"
-                        }
-                    ]
+                    "type": "integer",
+                    "default": 1
                 }
             }
         },
@@ -362,17 +361,6 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
-        },
-        "models.CategoryStatus": {
-            "type": "integer",
-            "enum": [
-                1,
-                2
-            ],
-            "x-enum-varnames": [
-                "StatusOn",
-                "StatusOff"
-            ]
         },
         "response.ApiResponse": {
             "type": "object",
@@ -422,6 +410,8 @@ var SwaggerInfo = &swag.Spec{
 	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
+	LeftDelim:        "{{",
+	RightDelim:       "}}",
 }
 
 func init() {

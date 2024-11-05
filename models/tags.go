@@ -9,7 +9,7 @@ type Tags struct {
 	ID     uint   `gorm:"primaryKey"`
 	Name   string `gorm:"uniqueIndex;type:varchar(255)"` // 假设标签名是唯一的
 	UserID uint   // 外键，关联到User表的ID
-	User   Users  `gorm:"foreignKey:UserID"` // GORM会自动处理这个关联
+	User   Users  `gorm:"references:uid"` // GORM会自动处理这个关联
 }
 
 func (model *Tags) TableName() string {

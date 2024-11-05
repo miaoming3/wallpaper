@@ -16,17 +16,37 @@ func NewCategoryDao() *CategoryDao {
 	return &CategoryDao{global.DbClient}
 }
 
-func (dao *CategoryDao) FindByAll(condition interface{}, page int, pageSize int) ([]models.Category, error) {
+func (dao *CategoryDao) getDBX(condition *QueryOption) *gorm.DB {
+	query := dao.Model(models.Category{})
+	for key, value := range condition.Conditions {
+		query = query.Where(key, value)
+	}
+	for preloadKey, preloadCondition := range condition.Preloads {
+		if preloadCondition != nil {
+			query = query.Preload(preloadKey, preloadCondition)
+		} else {
+			query = query.Preload(preloadKey)
+		}
+	}
+	return query
+}
+
+func (dao *CategoryDao) FindByAll(condition *QueryOption) ([]models.Category, error) {
 	var categories []models.Category
-	offset := (page - 1) * pageSize
-	if err := dao.Model(models.Category{}).Where(condition).Offset(offset).Limit(pageSize).Find(&categories).Error; err != nil {
+	if err := dao.getDBX(condition).Find(&categories).Error; err != nil {
 		return nil, err
 	}
 	return categories, nil
 }
 
-func (dao *CategoryDao) FindByTotal(conditions interface{}) (total int64, err error) {
-	if err = dao.Model(models.Category{}).Where(conditions).Count(&total).Error; err != nil {
+func (dao *CategoryDao) FindByTotal(condition interface{}) (total int64, err error) {
+	var query *gorm.DB
+	if conditions, ok := condition.(*QueryOption); ok {
+		query = dao.getDBX(conditions)
+	} else {
+		query = dao.Model(models.Category{}).Where(condition)
+	}
+	if err = query.Count(&total).Error; err != nil {
 		return 0, err
 	}
 	return

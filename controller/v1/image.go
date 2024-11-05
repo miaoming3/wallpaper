@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/miaoming3/wallpaper/controller/dto"
 	"github.com/miaoming3/wallpaper/response"
@@ -29,17 +28,22 @@ func (ic *ImageController) Index(c *gin.Context) {
 		response.Response(c, response.ApiError(response.CLIENTERROR, err))
 		return
 	}
-	fmt.Println(imageSearch)
 	response.Response(c, ic.IndexServer(c, &imageSearch))
 }
 
+// Save
+// @Summary 图片保存
+// @Tags 图片管理
+// @Description 获取图片列表
+// @Param ImageSearch query dto.ImageSave true "保存图片参数"
+// @Produce application/json
+// @Router /image/save [post]
 func (ic *ImageController) Save(c *gin.Context) {
 	var imageSave dto.ImageSave
 	if err := c.ShouldBind(&imageSave); err != nil {
 		response.Response(c, response.ApiError(response.CLIENTERROR, err))
 		return
 	}
-
 	response.Response(c, ic.CreateServer(&imageSave))
 
 }

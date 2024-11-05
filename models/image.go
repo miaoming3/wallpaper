@@ -6,15 +6,32 @@ import (
 	"gorm.io/gorm"
 )
 
+type ImageType uint8
+
+const (
+	TypeImage ImageType = iota + 1
+	TypeVideo ImageType = 2
+)
+
+type ImageRecommend uint
+
+const (
+	ImageRecommendOff ImageRecommend = iota + 1
+	ImageRecommendON  ImageRecommend = 2
+)
+
 type Image struct {
 	gorm.Model
 	Cid         uint
 	Category    Category `gorm:"foreignKey:Cid"`
 	Name        string
-	IsRecommend uint
-	UserID      uint   // 外键，关联到User表的ID
-	User        Users  `gorm:"foreignKey:UserID"` // GORM会自动处理这个关联
-	Tags        []Tags `gorm:"many2many:image_tags;"`
+	IsRecommend ImageRecommend `gorm:"is_recommend;type:tinyint(3);default:2;comment:1 推荐 2 不推荐"`
+	UserID      uint           // 外键，关联到User表的ID
+	User        Users          `gorm:"references:uid"` // GORM会自动处理这个关联
+	Tags        []Tags         `gorm:"many2many:image_tags;"`
+	Url         string         `gorm:"url;type:varchar(255)"`
+	Path        string         `gorm:"path;type:varchar(255)"`
+	Type        ImageType      `gorm:"type;type:tinyint(3);default:1;comment:1 图片 2 视频"`
 }
 
 func (model *Image) TableName() string {

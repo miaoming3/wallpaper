@@ -9,6 +9,7 @@ import (
 type Users struct {
 	gorm.Model
 	Username string `gorm:"uniqueIndex;type:varchar(255)"` // 假设用户名是唯一的
+	Uid      uint   `gorm:"unique:idx_uid;varchar(128)"`
 }
 
 func (model *Users) TableName() string {
