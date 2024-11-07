@@ -34,8 +34,8 @@ func (ic *ImageController) Index(c *gin.Context) {
 // Save
 // @Summary 图片保存
 // @Tags 图片管理
-// @Description 获取图片列表
-// @Param ImageSearch query dto.ImageSave true "保存图片参数"
+// @Description 图片保存
+// @Param ImageSave body dto.ImageSave true "保存图片参数"
 // @Produce application/json
 // @Router /image/save [post]
 func (ic *ImageController) Save(c *gin.Context) {
@@ -48,6 +48,13 @@ func (ic *ImageController) Save(c *gin.Context) {
 
 }
 
+// Update
+// @Summary 图片修改
+// @Tags 图片管理
+// @Description 图片修改
+// @Param ImageUpdate body dto.ImageUpdate true "修改图片参数"
+// @Produce application/json
+// @Router /image/update [put]
 func (ic *ImageController) Update(c *gin.Context) {
 	var imageUpdate dto.ImageUpdate
 	if err := c.ShouldBind(&imageUpdate); err != nil {

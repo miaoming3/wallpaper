@@ -16,6 +16,7 @@ const (
 	NotFoundError       uint = 1504
 	FoundSUCCESS        uint = 1505
 	DeleteError         uint = 1506
+	NotFoundCategory    uint = 1507
 )
 
 var messageString = map[uint]string{
@@ -31,4 +32,5 @@ var messageString = map[uint]string{
 	NotFoundError:       "查询数据不存在",
 	FoundSUCCESS:        "当前分类存在子分类",
 	DeleteError:         "删除分类失败",
+	NotFoundCategory:    "获取分类失败",
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/miaoming3/wallpaper/dao"
 	"github.com/miaoming3/wallpaper/models"
 	"github.com/miaoming3/wallpaper/response"
-	dto2 "github.com/miaoming3/wallpaper/response/dto"
+	"github.com/miaoming3/wallpaper/response/dro"
 	"strconv"
 )
 
@@ -142,11 +142,11 @@ func (cs *CategoryServer) DeleteServer(di interface{}) *response.ApiResponse {
 
 }
 
-func treeCategory(categories []models.Category, pid uint) []*dto2.CategoryListResponse {
-	var treeCategories []*dto2.CategoryListResponse
+func treeCategory(categories []models.Category, pid uint) []*dro.CategoryListResponse {
+	var treeCategories []*dro.CategoryListResponse
 	for _, category := range categories {
 		if category.Pid == pid {
-			data := &dto2.CategoryListResponse{
+			data := &dro.CategoryListResponse{
 				ID:      category.ID,
 				Name:    category.Name,
 				Pid:     category.Pid,

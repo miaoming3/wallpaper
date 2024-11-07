@@ -1,4 +1,4 @@
-package dto
+package dro
 
 type CategoryListResponse struct {
 	Name    string                  `json:"name"`

@@ -1,4 +1,4 @@
-package dto
+package dro
 
 type AdminLoginResponse struct {
 	Token      string `json:"token"`

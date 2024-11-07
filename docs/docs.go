@@ -169,6 +169,54 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/image/save": {
+            "post": {
+                "description": "图片保存",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图片管理"
+                ],
+                "summary": "图片保存",
+                "parameters": [
+                    {
+                        "description": "保存图片参数",
+                        "name": "ImageSave",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ImageSave"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/image/update": {
+            "put": {
+                "description": "图片修改",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图片管理"
+                ],
+                "summary": "图片修改",
+                "parameters": [
+                    {
+                        "description": "修改图片参数",
+                        "name": "ImageUpdate",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ImageUpdate"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/menu/del": {
             "delete": {
                 "description": "删除菜单",
@@ -295,6 +343,73 @@ const docTemplate = `{
             "properties": {
                 "id": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.ImageSave": {
+            "type": "object",
+            "properties": {
+                "cid": {
+                    "type": "integer"
+                },
+                "is_recommend": {
+                    "type": "integer"
+                },
+                "is_show": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "tags_id": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ImageUpdate": {
+            "type": "object",
+            "properties": {
+                "cid": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_recommend": {
+                    "type": "integer"
+                },
+                "is_show": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "tags_id": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "url": {
+                    "type": "string"
                 }
             }
         },

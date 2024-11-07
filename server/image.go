@@ -5,6 +5,8 @@ import (
 	"github.com/miaoming3/wallpaper/controller/dto"
 	"github.com/miaoming3/wallpaper/dao"
 	"github.com/miaoming3/wallpaper/response"
+	"github.com/miaoming3/wallpaper/response/dro"
+	"github.com/miaoming3/wallpaper/utils"
 )
 
 type ImageServer struct {
@@ -48,12 +50,54 @@ func (is *ImageServer) IndexServer(c *gin.Context, di interface{}) *response.Api
 	if err != nil {
 		return response.ApiError(response.ACCESSERROR, err)
 	}
-	return response.ApiPageSuccess(images, total, page, pageSize, total/int64(pageSize) > int64(page))
+	var imageResponse []dro.ImagesResponse
+	if err = utils.ResponseJsonUnmarshal(images, &imageResponse); err != nil {
+		return response.ApiError(response.ACCESSERROR, err)
+	}
+
+	return response.ApiPageSuccess(imageResponse, total, page, pageSize, total/int64(pageSize) > int64(page))
 }
+
 func (is *ImageServer) UpdateServer(di interface{}) *response.ApiResponse {
+	data, ok := di.(*dto.ImageUpdate)
+	if !ok {
+		return response.ApiError(response.ACCESSERROR, nil)
+	}
+
+	condition := map[string]interface{}{"id": data.CID}
+	total, err := dao.NewCategoryDao().FindByTotal(condition)
+	if err != nil {
+		return response.ApiError(response.ACCESSERROR, err)
+	}
+	if data.CID > 0 && total <= 0 {
+		return response.ApiError(response.NotFoundCategory, err)
+	}
+
+	err = dao.NewImagesDao().UpdateImage(data)
+	if err != nil {
+		return response.ApiError(response.SaveCategoryErr, err)
+	}
 	return response.ApiSuccess(nil)
 }
 func (is *ImageServer) CreateServer(di interface{}) *response.ApiResponse {
+	data, ok := di.(*dto.ImageSave)
+	if !ok {
+		return response.ApiError(response.ACCESSERROR, nil)
+	}
+
+	condition := map[string]interface{}{"id": data.CID}
+	total, err := dao.NewCategoryDao().FindByTotal(condition)
+	if err != nil {
+		return response.ApiError(response.ACCESSERROR, err)
+	}
+	if data.CID > 0 && total <= 0 {
+		return response.ApiError(response.NotFoundCategory, err)
+	}
+
+	err = dao.NewImagesDao().SaveImage(data)
+	if err != nil {
+		return response.ApiError(response.SaveCategoryErr, err)
+	}
 	return response.ApiSuccess(nil)
 }
 func (is *ImageServer) DeleteServer(di interface{}) *response.ApiResponse {

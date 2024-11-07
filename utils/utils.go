@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"math/rand"
 	"time"
 )
@@ -33,4 +34,15 @@ func GenerateRandomBytes(n int) []byte {
 		result[i] = byte(seededRand.Intn(256)) // 生成0-255之间的随机字节
 	}
 	return result
+}
+
+func ResponseJsonUnmarshal(data interface{}, responseData interface{}) error {
+	imageJson, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	if err = json.Unmarshal(imageJson, responseData); err != nil {
+		return err
+	}
+	return nil
 }

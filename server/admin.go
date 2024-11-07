@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/miaoming3/wallpaper/controller/dto"
 	"github.com/miaoming3/wallpaper/global"
-	dto2 "github.com/miaoming3/wallpaper/response/dto"
+	"github.com/miaoming3/wallpaper/response/dro"
 	"github.com/miaoming3/wallpaper/utils"
 	"time"
 
@@ -47,7 +47,7 @@ func (as *AdminServer) LoginServer(c *gin.Context, data *dto.AdminLoginData) *re
 	if err != nil || reflect.DeepEqual(admin, models.Admin{}) || !checkPassword(admin.Password, data.Password) {
 		return response.ApiError(response.ADMINORPASSWORD, err)
 	}
-	return response.ApiSuccess(dto2.AdminLoginResponse{
+	return response.ApiSuccess(dro.AdminLoginResponse{
 		Token:      utils.GenerateRandomStringMath(16),
 		UID:        admin.Uid,
 		Expression: time.Now().Format(time.DateTime),
