@@ -51,7 +51,7 @@ func (cg *CategoryController) Save(c *gin.Context) {
 		return
 	}
 
-	response.Response(c, cg.CreateServer(&saveCategory))
+	response.Response(c, cg.CreateServer(c, &saveCategory))
 }
 
 // Update
@@ -68,7 +68,7 @@ func (cg *CategoryController) Update(c *gin.Context) {
 		response.Response(c, response.ApiError(response.CLIENTERROR, err))
 		return
 	}
-	response.Response(c, cg.UpdateServer(&updateCategory))
+	response.Response(c, cg.UpdateServer(c, &updateCategory))
 }
 
 // Delete

@@ -17,11 +17,11 @@ func (ms *MenuServer) IndexServer(c *gin.Context, di interface{}) *response.ApiR
 	return response.ApiSuccess(nil)
 }
 
-func (ms *MenuServer) UpdateServer(di interface{}) *response.ApiResponse {
+func (ms *MenuServer) UpdateServer(c *gin.Context, di interface{}) *response.ApiResponse {
 	return response.ApiSuccess(nil)
 }
 
-func (ms *MenuServer) CreateServer(di interface{}) *response.ApiResponse {
+func (ms *MenuServer) CreateServer(c *gin.Context, di interface{}) *response.ApiResponse {
 	return response.ApiSuccess(nil)
 }
 

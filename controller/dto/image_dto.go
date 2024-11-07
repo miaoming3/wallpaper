@@ -20,7 +20,7 @@ type ImageSave struct {
 }
 
 type ImageUpdate struct {
-	ID uint `json:"id" from:"id" binding:"required "`
+	ID uint `json:"id" from:"id" binding:"required"`
 	ImageSave
 }
 

@@ -44,7 +44,7 @@ func (ic *ImageController) Save(c *gin.Context) {
 		response.Response(c, response.ApiError(response.CLIENTERROR, err))
 		return
 	}
-	response.Response(c, ic.CreateServer(&imageSave))
+	response.Response(c, ic.CreateServer(c, &imageSave))
 
 }
 
@@ -61,7 +61,7 @@ func (ic *ImageController) Update(c *gin.Context) {
 		response.Response(c, response.ApiError(response.CLIENTERROR, err))
 		return
 	}
-	response.Response(c, ic.UpdateServer(&imageUpdate))
+	response.Response(c, ic.UpdateServer(c, &imageUpdate))
 }
 
 func (ic *ImageController) Delete(c *gin.Context) {

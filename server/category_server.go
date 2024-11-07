@@ -1,13 +1,14 @@
 package server
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/miaoming3/wallpaper/controller/dto"
 	"github.com/miaoming3/wallpaper/dao"
 	"github.com/miaoming3/wallpaper/models"
 	"github.com/miaoming3/wallpaper/response"
 	"github.com/miaoming3/wallpaper/response/dro"
-	"strconv"
 )
 
 type CategoryServer struct {
@@ -50,7 +51,7 @@ func (cs *CategoryServer) IndexServer(c *gin.Context, di interface{}) *response.
 
 }
 
-func (cs *CategoryServer) UpdateServer(di interface{}) *response.ApiResponse {
+func (cs *CategoryServer) UpdateServer(c *gin.Context, di interface{}) *response.ApiResponse {
 
 	data, ok := di.(*dto.UpdateCategory)
 	if !ok {
@@ -84,7 +85,7 @@ func (cs *CategoryServer) UpdateServer(di interface{}) *response.ApiResponse {
 
 }
 
-func (cs *CategoryServer) CreateServer(di interface{}) *response.ApiResponse {
+func (cs *CategoryServer) CreateServer(c *gin.Context, di interface{}) *response.ApiResponse {
 	data, ok := di.(*dto.SaveCategory)
 	if !ok {
 		return response.ApiError(response.ACCESSERROR, nil)

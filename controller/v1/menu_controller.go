@@ -44,7 +44,7 @@ func (mc *MenuController) Save(c *gin.Context) {
 		response.Response(c, response.ApiError(response.CLIENTERROR, err))
 		return
 	}
-	response.Response(c, mc.CreateServer(&saveMenu))
+	response.Response(c, mc.CreateServer(c, &saveMenu))
 }
 
 // Update
@@ -60,7 +60,7 @@ func (mc *MenuController) Update(c *gin.Context) {
 		response.Response(c, response.ApiError(response.CLIENTERROR, err))
 		return
 	}
-	response.Response(c, mc.UpdateServer(&updateMenu))
+	response.Response(c, mc.UpdateServer(c, &updateMenu))
 }
 
 // Delete

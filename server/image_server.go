@@ -58,18 +58,27 @@ func (is *ImageServer) IndexServer(c *gin.Context, di interface{}) *response.Api
 	return response.ApiPageSuccess(imageResponse, total, page, pageSize, total/int64(pageSize) > int64(page))
 }
 
-func (is *ImageServer) UpdateServer(di interface{}) *response.ApiResponse {
+func (is *ImageServer) UpdateServer(c *gin.Context, di interface{}) *response.ApiResponse {
 	data, ok := di.(*dto.ImageUpdate)
 	if !ok {
 		return response.ApiError(response.ACCESSERROR, nil)
 	}
+	total, err := dao.NewImagesDao().FindByTotal(map[string]uint{"id": data.ID})
 
-	condition := map[string]interface{}{"id": data.CID}
-	total, err := dao.NewCategoryDao().FindByTotal(condition)
 	if err != nil {
 		return response.ApiError(response.ACCESSERROR, err)
 	}
-	if data.CID > 0 && total <= 0 {
+
+	if total <= 0 {
+		return response.ApiError(response.NotFoundImages, err)
+	}
+
+	total, err = dao.NewCategoryDao().FindByTotal(map[string]uint{"id": data.CID})
+	if err != nil {
+		return response.ApiError(response.ACCESSERROR, err)
+	}
+
+	if total <= 0 {
 		return response.ApiError(response.NotFoundCategory, err)
 	}
 
@@ -79,14 +88,13 @@ func (is *ImageServer) UpdateServer(di interface{}) *response.ApiResponse {
 	}
 	return response.ApiSuccess(nil)
 }
-func (is *ImageServer) CreateServer(di interface{}) *response.ApiResponse {
+func (is *ImageServer) CreateServer(c *gin.Context, di interface{}) *response.ApiResponse {
 	data, ok := di.(*dto.ImageSave)
 	if !ok {
 		return response.ApiError(response.ACCESSERROR, nil)
 	}
 
-	condition := map[string]interface{}{"id": data.CID}
-	total, err := dao.NewCategoryDao().FindByTotal(condition)
+	total, err := dao.NewCategoryDao().FindByTotal(map[string]uint{"id": data.CID})
 	if err != nil {
 		return response.ApiError(response.ACCESSERROR, err)
 	}

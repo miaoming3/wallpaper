@@ -1,18 +1,20 @@
 package server
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/miaoming3/wallpaper/controller/dto"
 	"github.com/miaoming3/wallpaper/global"
 	"github.com/miaoming3/wallpaper/response/dro"
 	"github.com/miaoming3/wallpaper/utils"
-	"time"
+
+	"reflect"
 
 	"github.com/miaoming3/wallpaper/dao"
 	"github.com/miaoming3/wallpaper/models"
 	"github.com/miaoming3/wallpaper/response"
 	"golang.org/x/crypto/bcrypt"
-	"reflect"
 )
 
 type AdminServer struct {

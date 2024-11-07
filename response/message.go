@@ -17,6 +17,10 @@ const (
 	FoundSUCCESS        uint = 1505
 	DeleteError         uint = 1506
 	NotFoundCategory    uint = 1507
+
+	//图片错误
+
+	NotFoundImages uint = 1600
 )
 
 var messageString = map[uint]string{
@@ -33,4 +37,6 @@ var messageString = map[uint]string{
 	FoundSUCCESS:        "当前分类存在子分类",
 	DeleteError:         "删除分类失败",
 	NotFoundCategory:    "获取分类失败",
+
+	NotFoundImages: "查找图片数据不存在,修正后重试",
 }

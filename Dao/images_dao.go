@@ -15,6 +15,7 @@ func NewImagesDao() *ImagesDao {
 	return &ImagesDao{global.DbClient}
 }
 
+// getDBX
 func (dao *ImagesDao) getDBX(condition *QueryOption) *gorm.DB {
 	query := dao.Model(models.Image{})
 	for key, value := range condition.Conditions {
