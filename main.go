@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/miaoming3/wallpaper/global"
+
 	"github.com/miaoming3/wallpaper/initialization"
 )
 

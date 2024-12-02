@@ -348,6 +348,11 @@ const docTemplate = `{
         },
         "dto.ImageSave": {
             "type": "object",
+            "required": [
+                "cid",
+                "name",
+                "path"
+            ],
             "properties": {
                 "cid": {
                     "type": "integer"
@@ -380,6 +385,12 @@ const docTemplate = `{
         },
         "dto.ImageUpdate": {
             "type": "object",
+            "required": [
+                "cid",
+                "id",
+                "name",
+                "path"
+            ],
             "properties": {
                 "cid": {
                     "type": "integer"

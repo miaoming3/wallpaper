@@ -21,6 +21,12 @@ const (
 	//图片错误
 
 	NotFoundImages uint = 1600
+
+	//upload 文件上传错误
+	UploadNotSupportExt = 1800
+	UploadMaxSize       = 1801
+	UploadCreateDirErr  = 1802
+	UploadSaveError     = 1803
 )
 
 var messageString = map[uint]string{
@@ -39,4 +45,9 @@ var messageString = map[uint]string{
 	NotFoundCategory:    "获取分类失败",
 
 	NotFoundImages: "查找图片数据不存在,修正后重试",
+
+	UploadNotSupportExt: "文件格式错误,不支持该格式",
+	UploadMaxSize:       "文件超出最大限制",
+	UploadCreateDirErr:  "创建文件夹失败",
+	UploadSaveError:     "保存文件失败",
 }

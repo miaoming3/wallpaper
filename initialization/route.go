@@ -17,8 +17,12 @@ func InitRoutes() *gin.Engine {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.Use(gin.Recovery(), middleware.LoadPageMiddleware(), gin.Logger())
 	r.Static("/static", "./static")
+	r.Static("/uploads", "./uploads")
 	//r.LoadHTMLGlob(global.SysConfig.Template)
 	baseController := v1.NewBaseController()
+	uploadController := v1.NewUploadController()
+	r.POST("uploads/file", uploadController.UploadFile)
+	r.POST("uploads/must", uploadController.UploadFileMust)
 	setupRoutes(r, baseController)
 
 	return r
@@ -27,6 +31,7 @@ func InitRoutes() *gin.Engine {
 func setupRoutes(r *gin.Engine, controller *v1.BaseController) {
 	api := r.Group("/api/v1")
 	{
+
 		registerRoutes(api, "admin", controller.AdminController)
 		registerRoutes(api, "category", controller.CategoryController)
 		registerRoutes(api, "menu", controller.MenuController)

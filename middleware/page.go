@@ -1,8 +1,9 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 func LoadPageMiddleware() gin.HandlerFunc {
@@ -25,6 +26,7 @@ func LoadPageMiddleware() gin.HandlerFunc {
 		}
 		c.Set("page", page)
 		c.Set("pageSize", pageSize)
+		c.Set("user_uid", 9744223)
 		c.Next()
 	}
 

@@ -53,6 +53,7 @@ func (ic *ImageController) Save(c *gin.Context) {
 // @Tags 图片管理
 // @Description 图片修改
 // @Param ImageUpdate body dto.ImageUpdate true "修改图片参数"
+// @Body  name "m名称"
 // @Produce application/json
 // @Router /image/update [put]
 func (ic *ImageController) Update(c *gin.Context) {

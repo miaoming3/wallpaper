@@ -1,10 +1,11 @@
 package response
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/global"
 	"net/http"
 	"reflect"
+
+	"github.com/gin-gonic/gin"
+	"github.com/miaoming3/wallpaper/global"
 )
 
 type ApiResponse struct {
@@ -39,7 +40,7 @@ func ApiError(code uint, err error) *ApiResponse {
 	return &ApiResponse{
 		Code:  code,
 		Data:  []string{},
-		Msg:   getMessage(code),
+		Msg:   GetMessage(code),
 		Error: showError(err),
 	}
 }
@@ -72,7 +73,7 @@ func Response(c *gin.Context, response *ApiResponse) {
 	c.JSON(http.StatusOK, response)
 }
 
-func getMessage(code uint) string {
+func GetMessage(code uint) string {
 	if message, exists := messageString[code]; exists {
 		return message
 	}
