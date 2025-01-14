@@ -5,15 +5,14 @@ import (
 	"reflect"
 
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/global"
 )
 
 type ApiResponse struct {
-	Code  uint        `json:"code"`
-	Data  interface{} `json:"data"`
-	Msg   string      `json:"msg"`
-	Error string      `json:"error,omitempty"`
-	Page  *PageData   `json:"page,omitempty"`
+	Code uint        `json:"code"`
+	Data interface{} `json:"data"`
+	Msg  string      `json:"msg"`
+	Err  error       `json:"error,omitempty"`
+	Page *PageData   `json:"page,omitempty"`
 }
 
 type PageData struct {
@@ -23,6 +22,9 @@ type PageData struct {
 	Next  bool  `json:"next"`
 }
 
+func (ar ApiResponse) Error() string {
+	return ar.Err.Error()
+}
 func ApiSuccess(data interface{}) *ApiResponse {
 	if data == nil {
 		data = []string{}
@@ -38,18 +40,11 @@ func ApiSuccess(data interface{}) *ApiResponse {
 func ApiError(code uint, err error) *ApiResponse {
 
 	return &ApiResponse{
-		Code:  code,
-		Data:  []string{},
-		Msg:   GetMessage(code),
-		Error: showError(err),
+		Code: code,
+		Data: []string{},
+		Msg:  GetMessage(code),
+		Err:  err,
 	}
-}
-func showError(err error) string {
-
-	if global.SysConfig.Dev && err != nil {
-		return err.Error()
-	}
-	return ""
 }
 
 func ApiPageSuccess(data interface{}, total int64, page int, size int, next bool) *ApiResponse {

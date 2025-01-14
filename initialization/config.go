@@ -1,6 +1,8 @@
 package initialization
 
 import (
+	"fmt"
+	"github.com/fsnotify/fsnotify"
 	"github.com/miaoming3/wallpaper/global"
 	"github.com/spf13/viper"
 	"log"
@@ -21,6 +23,12 @@ func InitConfig(path string) {
 	if err := viper.ReadInConfig(); err != nil {
 		log.Panicf("reading config file err: %v", err)
 	}
+	viper.WatchConfig()
+	viper.OnConfigChange(func(in fsnotify.Event) {
+		if err := viper.Unmarshal(&global.SysConfig); err != nil {
+			panic(fmt.Errorf("初始化配置文件失败:%s", err))
+		}
+	})
 	if err := viper.Unmarshal(&global.SysConfig); err != nil {
 		log.Panicf("config unmarshal  err: %v", err)
 	}

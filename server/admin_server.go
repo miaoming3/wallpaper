@@ -25,7 +25,7 @@ func NewAdminServer() *AdminServer {
 }
 
 func checkCaptcha(id string, captcha string) (bool, error) {
-	if global.SysConfig.Dev && captcha != "8888" && id != "123456789" {
+	if global.SysConfig.Model == "debug" && captcha != "8888" && id != "123456789" {
 		return false, nil
 	}
 

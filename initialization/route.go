@@ -2,23 +2,29 @@ package initialization
 
 import (
 	"fmt"
-
 	"github.com/gin-gonic/gin"
 	v1 "github.com/miaoming3/wallpaper/controller/v1"
 	docs "github.com/miaoming3/wallpaper/docs"
-	"github.com/miaoming3/wallpaper/middleware"
+	"github.com/miaoming3/wallpaper/global"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"net/http"
 )
 
 func InitRoutes() *gin.Engine {
+	gin.SetMode(global.SysConfig.Model)
 	r := gin.Default()
+	r.LoadHTMLGlob(global.SysConfig.Template)
+	r.GET("dd", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "ds/index.html", nil)
+	})
+	r.GET("ds", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "user/index.html", nil)
+	})
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	r.Use(gin.Recovery(), middleware.LoadPageMiddleware(), gin.Logger())
 	r.Static("/static", "./static")
 	r.Static("/uploads", "./uploads")
-	//r.LoadHTMLGlob(global.SysConfig.Template)
 	baseController := v1.NewBaseController()
 	uploadController := v1.NewUploadController()
 	r.POST("uploads/file", uploadController.UploadFile)
@@ -52,4 +58,5 @@ func registerRoutes(r *gin.RouterGroup, prefix string, controller interface{}) {
 		r.PUT(fmt.Sprintf("/%s/update", prefix), crudController.Update)
 		r.DELETE(fmt.Sprintf("/%s/del", prefix), crudController.Delete)
 	}
+
 }
