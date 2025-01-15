@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/miaoming3/wallpaper/global"
+	"github.com/miaoming3/wallpaper/http/global"
+	initialization2 "github.com/miaoming3/wallpaper/http/initialization"
 
 	"github.com/miaoming3/wallpaper/initialization"
 )
 
 func init() {
-	initialization.InitConfig("")
-	initialization.InitDataBases()
+	initialization2.InitConfig("")
+	initialization2.InitDataBases()
 
 }
 
