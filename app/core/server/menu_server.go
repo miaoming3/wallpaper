@@ -13,19 +13,19 @@ func NewMenuServe() BaseServiceInterface {
 	return &MenuServer{}
 }
 
-func (ms *MenuServer) IndexServer(c *gin.Context, di interface{}) *response.ApiResponse {
+func (ms *MenuServer) IndexServer(c *gin.Context, di interface{}) *response.APi {
 
 	return response2.ApiSuccess(nil)
 }
 
-func (ms *MenuServer) UpdateServer(c *gin.Context, di interface{}) *response.ApiResponse {
+func (ms *MenuServer) UpdateServer(c *gin.Context, di interface{}) *response.APi {
 	return response2.ApiSuccess(nil)
 }
 
-func (ms *MenuServer) CreateServer(c *gin.Context, di interface{}) *response.ApiResponse {
+func (ms *MenuServer) CreateServer(c *gin.Context, di interface{}) *response.APi {
 	return response2.ApiSuccess(nil)
 }
 
-func (ms *MenuServer) DeleteServer(di interface{}) *response.ApiResponse {
+func (ms *MenuServer) DeleteServer(di interface{}) *response.APi {
 	return response2.ApiSuccess(nil)
 }

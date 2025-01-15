@@ -19,7 +19,7 @@ func NewCategoryServer() BaseServiceInterface {
 	return &CategoryServer{}
 }
 
-func (cs *CategoryServer) IndexServer(c *gin.Context, di interface{}) *response.ApiResponse {
+func (cs *CategoryServer) IndexServer(c *gin.Context, di interface{}) *response.APi {
 	data, ok := di.(*dto.CategoryIndex)
 	if !ok {
 		return response2.ApiError(response2.ACCESSERROR, nil)
@@ -52,7 +52,7 @@ func (cs *CategoryServer) IndexServer(c *gin.Context, di interface{}) *response.
 
 }
 
-func (cs *CategoryServer) UpdateServer(c *gin.Context, di interface{}) *response.ApiResponse {
+func (cs *CategoryServer) UpdateServer(c *gin.Context, di interface{}) *response.APi {
 
 	data, ok := di.(*dto.UpdateCategory)
 	if !ok {
@@ -86,7 +86,7 @@ func (cs *CategoryServer) UpdateServer(c *gin.Context, di interface{}) *response
 
 }
 
-func (cs *CategoryServer) CreateServer(c *gin.Context, di interface{}) *response.ApiResponse {
+func (cs *CategoryServer) CreateServer(c *gin.Context, di interface{}) *response.APi {
 	data, ok := di.(*dto.SaveCategory)
 	if !ok {
 		return response2.ApiError(response2.ACCESSERROR, nil)
@@ -114,7 +114,7 @@ func (cs *CategoryServer) CreateServer(c *gin.Context, di interface{}) *response
 	return response2.ApiSuccess(nil)
 }
 
-func (cs *CategoryServer) DeleteServer(di interface{}) *response.ApiResponse {
+func (cs *CategoryServer) DeleteServer(di interface{}) *response.APi {
 	data, ok := di.(*dto.DeleteCategory)
 	if !ok {
 		return response2.ApiError(response2.ACCESSERROR, nil)

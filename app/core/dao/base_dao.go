@@ -16,10 +16,10 @@ func NewQueryOption() *QueryOption {
 	}
 }
 
-func (q *QueryOption) AddCondition(key string, value interface{}) {
+func (q QueryOption) AddCondition(key string, value interface{}) {
 	q.Conditions[key] = value
 }
 
-func (q *QueryOption) AddPreload(key string, condition interface{}) {
+func (q QueryOption) AddPreload(key string, condition interface{}) {
 	q.Preloads[key] = condition
 }

@@ -39,7 +39,7 @@ func checkPassword(passwordHash string, password string) bool {
 	return true
 }
 
-func (as *AdminServer) LoginServer(c *gin.Context, data *dto.AdminLoginData) *response.ApiResponse {
+func (as *AdminServer) LoginServer(c *gin.Context, data *dto.AdminLoginData) *response.APi {
 	ok, err := checkCaptcha(data.CaptchaID, data.Captcha)
 	if err != nil || !ok {
 		return response2.ApiError(response2.CAPTCHAERROR, err)

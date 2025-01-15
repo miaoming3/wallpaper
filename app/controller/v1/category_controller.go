@@ -15,7 +15,7 @@ type CategoryController struct {
 // @Tags 分类管理
 // @Description  管理分类
 // @Schemes http, https
-// @Success 200 {object} response.ApiResponse
+// @Success 200 {object} response.APi
 func NewCategoryController() *CategoryController {
 	return &CategoryController{server.NewCategoryServer()}
 }
@@ -59,7 +59,7 @@ func (cg *CategoryController) Save(c *gin.Context) {
 // @Tags 分类管理
 // @Description 修改分类
 // @Param UpdateCategory body dto.UpdateCategory true "Category data to update"
-// @Success 200 {object} response.ApiResponse
+// @Success 200 {object} response.APi
 // @Router /category/update [put]
 func (cg *CategoryController) Update(c *gin.Context) {
 	var updateCategory dto.UpdateCategory

@@ -112,7 +112,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.ApiResponse"
+                            "$ref": "#/definitions/response.APi"
                         }
                     }
                 }
@@ -283,7 +283,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.ApiResponse"
+                            "$ref": "#/definitions/response.APi"
                         }
                     }
                 }
@@ -477,7 +477,7 @@
                 }
             }
         },
-        "response.ApiResponse": {
+        "response.APi": {
             "type": "object",
             "properties": {
                 "code": {

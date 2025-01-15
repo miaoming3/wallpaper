@@ -25,7 +25,7 @@ type UploadServer struct {
 func NewUploadServer() UploadServer {
 	return UploadServer{}
 }
-func (us *UploadServer) UploadOneFile(c *gin.Context, file *dto.UploadFile) *response.ApiResponse {
+func (us *UploadServer) UploadOneFile(c *gin.Context, file *dto.UploadFile) *response.APi {
 	ext := filepath.Ext(file.File.Filename)
 	if !us.IsExtensionAllowed(ext) {
 		return response2.ApiError(response2.UploadNotSupportExt, nil)
@@ -51,7 +51,7 @@ func (us *UploadServer) UploadOneFile(c *gin.Context, file *dto.UploadFile) *res
 
 }
 
-func (us *UploadServer) UploadsFileMust(c *gin.Context, file *dto.UploadFileMust) *response.ApiResponse {
+func (us *UploadServer) UploadsFileMust(c *gin.Context, file *dto.UploadFileMust) *response.APi {
 	var updateResponse []dro.UploadResponseData
 	for k, v := range file.File {
 		ext := filepath.Ext(v.Filename)

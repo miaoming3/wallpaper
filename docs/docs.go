@@ -123,7 +123,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.ApiResponse"
+                            "$ref": "#/definitions/response.APi"
                         }
                     }
                 }
@@ -294,7 +294,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/response.ApiResponse"
+                            "$ref": "#/definitions/response.APi"
                         }
                     }
                 }
@@ -488,7 +488,7 @@ const docTemplate = `{
                 }
             }
         },
-        "response.ApiResponse": {
+        "response.APi": {
             "type": "object",
             "properties": {
                 "code": {

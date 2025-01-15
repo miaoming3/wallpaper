@@ -52,7 +52,7 @@ func (mc *MenuController) Save(c *gin.Context) {
 // @Tags 菜单管理
 // @Description 修改菜单
 // @Param UpdateMenu body dto.UpdateMenu true "修改菜单"
-// @Success 200 {object} response.ApiResponse
+// @Success 200 {object} response.APi
 // @Router /menu/update [put]
 func (mc *MenuController) Update(c *gin.Context) {
 	var updateMenu dto.UpdateMenu

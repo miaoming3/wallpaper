@@ -14,6 +14,6 @@ func init() {
 
 func main() {
 
-	v := initialization.InitRoutes()
+	v := initialization.InitRoute()
 	_ = v.Run(fmt.Sprintf(":%v", global.SysConfig.SysPort))
 }

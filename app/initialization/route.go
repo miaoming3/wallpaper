@@ -12,7 +12,7 @@ import (
 	"net/http"
 )
 
-func InitRoutes() *gin.Engine {
+func InitRoute() *gin.Engine {
 	gin.SetMode(global.SysConfig.Model)
 	r := gin.Default()
 	r.NoRoute(func(c *gin.Context) {

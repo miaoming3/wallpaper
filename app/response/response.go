@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type ApiResponse struct {
+type APi struct {
 	Code uint        `json:"code"`
 	Data interface{} `json:"data"`
 	Msg  string      `json:"msg"`
@@ -22,24 +22,24 @@ type PageData struct {
 	Next  bool  `json:"next"`
 }
 
-func (ar ApiResponse) Error() string {
+func (ar *APi) Error() string {
 	return ar.Err.Error()
 }
-func ApiSuccess(data interface{}) *ApiResponse {
+func ApiSuccess(data interface{}) *APi {
 	if data == nil {
 		data = []string{}
 	}
 
-	return &ApiResponse{
+	return &APi{
 		Code: 0,
 		Data: data,
 		Msg:  "success",
 	}
 }
 
-func ApiError(code uint, err error) *ApiResponse {
+func ApiError(code uint, err error) *APi {
 
-	return &ApiResponse{
+	return &APi{
 		Code: code,
 		Data: []string{},
 		Msg:  GetMessage(code),
@@ -47,11 +47,11 @@ func ApiError(code uint, err error) *ApiResponse {
 	}
 }
 
-func ApiPageSuccess(data interface{}, total int64, page int, size int, next bool) *ApiResponse {
+func ApiPageSuccess(data interface{}, total int64, page int, size int, next bool) *APi {
 	if data == nil || reflect.ValueOf(data).IsNil() {
 		data = []string{}
 	}
-	return &ApiResponse{
+	return &APi{
 		Code: 0,
 		Data: data,
 		Msg:  "success",
@@ -64,7 +64,7 @@ func ApiPageSuccess(data interface{}, total int64, page int, size int, next bool
 	}
 }
 
-func Response(c *gin.Context, response *ApiResponse) {
+func Response(c *gin.Context, response *APi) {
 	c.JSON(http.StatusOK, response)
 }
 

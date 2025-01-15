@@ -13,11 +13,11 @@ import (
 type ImageServer struct {
 }
 
-func NewImageServer() BaseServiceInterface {
+func NewImageServer() *ImageServer {
 	return &ImageServer{}
 }
 
-func (is *ImageServer) IndexServer(c *gin.Context, di interface{}) *response.ApiResponse {
+func (is *ImageServer) IndexServer(c *gin.Context, di interface{}) *response.APi {
 	data, ok := di.(*dto.ImageSearch)
 	if !ok {
 		return response2.ApiError(response2.ACCESSERROR, nil)
@@ -59,7 +59,7 @@ func (is *ImageServer) IndexServer(c *gin.Context, di interface{}) *response.Api
 	return response2.ApiPageSuccess(imageResponse, total, page, pageSize, total/int64(pageSize) > int64(page))
 }
 
-func (is *ImageServer) UpdateServer(c *gin.Context, di interface{}) *response.ApiResponse {
+func (is *ImageServer) UpdateServer(c *gin.Context, di interface{}) *response.APi {
 	data, ok := di.(*dto.ImageUpdate)
 	if !ok {
 		return response2.ApiError(response2.ACCESSERROR, nil)
@@ -90,7 +90,7 @@ func (is *ImageServer) UpdateServer(c *gin.Context, di interface{}) *response.Ap
 	}
 	return response2.ApiSuccess(nil)
 }
-func (is *ImageServer) CreateServer(c *gin.Context, di interface{}) *response.ApiResponse {
+func (is *ImageServer) CreateServer(c *gin.Context, di interface{}) *response.APi {
 	data, ok := di.(*dto.ImageSave)
 	if !ok {
 		return response2.ApiError(response2.ACCESSERROR, nil)
@@ -111,6 +111,6 @@ func (is *ImageServer) CreateServer(c *gin.Context, di interface{}) *response.Ap
 	}
 	return response2.ApiSuccess(nil)
 }
-func (is *ImageServer) DeleteServer(di interface{}) *response.ApiResponse {
+func (is *ImageServer) DeleteServer(di interface{}) *response.APi {
 	return response2.ApiSuccess(nil)
 }

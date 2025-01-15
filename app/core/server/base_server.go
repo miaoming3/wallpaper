@@ -6,8 +6,8 @@ import (
 )
 
 type BaseServiceInterface interface {
-	IndexServer(c *gin.Context, data interface{}) *response.ApiResponse
-	UpdateServer(c *gin.Context, data interface{}) *response.ApiResponse
-	CreateServer(c *gin.Context, data interface{}) *response.ApiResponse
-	DeleteServer(data interface{}) *response.ApiResponse
+	IndexServer(c *gin.Context, data interface{}) *response.APi
+	UpdateServer(c *gin.Context, data interface{}) *response.APi
+	CreateServer(c *gin.Context, data interface{}) *response.APi
+	DeleteServer(data interface{}) *response.APi
 }
