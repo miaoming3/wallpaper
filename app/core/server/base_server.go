@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/response"
+	"github.com/miaoming3/wallpaper/app/response"
 )
 
 type BaseServiceInterface interface {

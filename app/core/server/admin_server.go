@@ -1,20 +1,19 @@
 package server
 
 import (
-	"github.com/miaoming3/wallpaper/core/dao"
-	"github.com/miaoming3/wallpaper/core/models"
-	"github.com/miaoming3/wallpaper/http/global"
-	response2 "github.com/miaoming3/wallpaper/http/response"
-	"github.com/miaoming3/wallpaper/http/response/dro"
+	"github.com/miaoming3/wallpaper/app/core/dao"
+	"github.com/miaoming3/wallpaper/app/core/models"
+	"github.com/miaoming3/wallpaper/app/global"
+	response2 "github.com/miaoming3/wallpaper/app/response"
+	"github.com/miaoming3/wallpaper/app/response/dro"
+	"github.com/miaoming3/wallpaper/app/utils"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/controller/dto"
-	"github.com/miaoming3/wallpaper/utils"
-
+	"github.com/miaoming3/wallpaper/app/dto"
 	"reflect"
 
-	"github.com/miaoming3/wallpaper/response"
+	"github.com/miaoming3/wallpaper/app/response"
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -2,15 +2,15 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	server2 "github.com/miaoming3/wallpaper/core/server"
+	"github.com/miaoming3/wallpaper/app/core/server"
 )
 
 type UserController struct {
-	server2.BaseServiceInterface
+	server.BaseServiceInterface
 }
 
 func NewUserController() *UserController {
-	return &UserController{server2.NewMenuServe()}
+	return &UserController{server.NewMenuServe()}
 }
 
 func (ac *UserController) Index(c *gin.Context) {

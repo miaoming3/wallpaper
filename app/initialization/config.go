@@ -3,7 +3,7 @@ package initialization
 import (
 	"fmt"
 	"github.com/fsnotify/fsnotify"
-	"github.com/miaoming3/wallpaper/http/global"
+	"github.com/miaoming3/wallpaper/app/global"
 	"github.com/spf13/viper"
 	"log"
 	"os"

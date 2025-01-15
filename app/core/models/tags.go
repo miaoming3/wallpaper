@@ -2,7 +2,7 @@ package models
 
 import (
 	"fmt"
-	"github.com/miaoming3/wallpaper/http/global"
+	"github.com/miaoming3/wallpaper/app/global"
 )
 
 type Tags struct {

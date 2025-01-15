@@ -1,7 +1,7 @@
 package global
 
 import (
-	"github.com/miaoming3/wallpaper/http/config"
+	"github.com/miaoming3/wallpaper/app/config"
 	"gorm.io/gorm"
 )
 

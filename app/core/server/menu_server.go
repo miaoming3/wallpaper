@@ -2,8 +2,8 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	response2 "github.com/miaoming3/wallpaper/http/response"
-	"github.com/miaoming3/wallpaper/response"
+	"github.com/miaoming3/wallpaper/app/response"
+	response2 "github.com/miaoming3/wallpaper/app/response"
 )
 
 type MenuServer struct {

@@ -1,15 +1,15 @@
 package server
 
 import (
-	dao2 "github.com/miaoming3/wallpaper/core/dao"
-	"github.com/miaoming3/wallpaper/core/models"
-	response2 "github.com/miaoming3/wallpaper/http/response"
-	"github.com/miaoming3/wallpaper/http/response/dro"
+	"github.com/miaoming3/wallpaper/app/core/dao"
+	"github.com/miaoming3/wallpaper/app/core/models"
+	response2 "github.com/miaoming3/wallpaper/app/response"
+	"github.com/miaoming3/wallpaper/app/response/dro"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/controller/dto"
-	"github.com/miaoming3/wallpaper/response"
+	"github.com/miaoming3/wallpaper/app/dto"
+	"github.com/miaoming3/wallpaper/app/response"
 )
 
 type CategoryServer struct {
@@ -25,7 +25,7 @@ func (cs *CategoryServer) IndexServer(c *gin.Context, di interface{}) *response.
 		return response2.ApiError(response2.ACCESSERROR, nil)
 	}
 
-	condition := dao2.NewQueryOption()
+	condition := dao.NewQueryOption()
 
 	if data.Name != "" {
 		condition.AddCondition("name LIKE ? ", "%"+data.Name+"%")
@@ -40,11 +40,11 @@ func (cs *CategoryServer) IndexServer(c *gin.Context, di interface{}) *response.
 		pid, _ = strconv.Atoi(data.Pid)
 	}
 
-	categories, err := dao2.NewCategoryDao().FindByAll(condition)
+	categories, err := dao.NewCategoryDao().FindByAll(condition)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
-	total, err := dao2.NewCategoryDao().FindByTotal(condition)
+	total, err := dao.NewCategoryDao().FindByTotal(condition)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
@@ -62,7 +62,7 @@ func (cs *CategoryServer) UpdateServer(c *gin.Context, di interface{}) *response
 		return response2.ApiError(response2.CategoryParentError, nil)
 	}
 	condition := map[string]interface{}{"id": data.ID}
-	total, err := dao2.NewCategoryDao().FindByTotal(condition)
+	total, err := dao.NewCategoryDao().FindByTotal(condition)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
@@ -70,7 +70,7 @@ func (cs *CategoryServer) UpdateServer(c *gin.Context, di interface{}) *response
 		return response2.ApiError(response2.NotFoundError, err)
 	}
 
-	ok, err = dao2.NewCategoryDao().UniqueFiled("name", data.Name, data.ID)
+	ok, err = dao.NewCategoryDao().UniqueFiled("name", data.Name, data.ID)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
@@ -78,7 +78,7 @@ func (cs *CategoryServer) UpdateServer(c *gin.Context, di interface{}) *response
 		return response2.ApiError(response2.CategoryNameErr, err)
 	}
 
-	err = dao2.NewCategoryDao().UpdateCategory(data)
+	err = dao.NewCategoryDao().UpdateCategory(data)
 	if err != nil {
 		return response2.ApiError(response2.SaveCategoryErr, err)
 	}
@@ -91,7 +91,7 @@ func (cs *CategoryServer) CreateServer(c *gin.Context, di interface{}) *response
 	if !ok {
 		return response2.ApiError(response2.ACCESSERROR, nil)
 	}
-	ok, err := dao2.NewCategoryDao().UniqueFiled("name", data.Name, 0)
+	ok, err := dao.NewCategoryDao().UniqueFiled("name", data.Name, 0)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
@@ -99,7 +99,7 @@ func (cs *CategoryServer) CreateServer(c *gin.Context, di interface{}) *response
 		return response2.ApiError(response2.CategoryNameErr, err)
 	}
 	condition := map[string]interface{}{"id": data.Pid}
-	total, err := dao2.NewCategoryDao().FindByTotal(condition)
+	total, err := dao.NewCategoryDao().FindByTotal(condition)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
@@ -107,7 +107,7 @@ func (cs *CategoryServer) CreateServer(c *gin.Context, di interface{}) *response
 		return response2.ApiError(response2.NotFoundPid, err)
 	}
 
-	err = dao2.NewCategoryDao().SaveCategory(data)
+	err = dao.NewCategoryDao().SaveCategory(data)
 	if err != nil {
 		return response2.ApiError(response2.SaveCategoryErr, err)
 	}
@@ -120,7 +120,7 @@ func (cs *CategoryServer) DeleteServer(di interface{}) *response.ApiResponse {
 		return response2.ApiError(response2.ACCESSERROR, nil)
 	}
 	condition := map[string]interface{}{"pid": data.ID}
-	total, err := dao2.NewCategoryDao().FindByTotal(condition)
+	total, err := dao.NewCategoryDao().FindByTotal(condition)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
@@ -128,7 +128,7 @@ func (cs *CategoryServer) DeleteServer(di interface{}) *response.ApiResponse {
 		return response2.ApiError(response2.FoundSUCCESS, err)
 	}
 	condition = map[string]interface{}{"id": data.ID}
-	total, err = dao2.NewCategoryDao().FindByTotal(condition)
+	total, err = dao.NewCategoryDao().FindByTotal(condition)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
@@ -136,7 +136,7 @@ func (cs *CategoryServer) DeleteServer(di interface{}) *response.ApiResponse {
 		return response2.ApiError(response2.NotFoundError, err)
 	}
 
-	if err = dao2.NewCategoryDao().DeleteCategory(data); err != nil {
+	if err = dao.NewCategoryDao().DeleteCategory(data); err != nil {
 		return response2.ApiError(response2.DeleteError, err)
 	}
 

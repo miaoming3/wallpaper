@@ -2,12 +2,12 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/controller/dto"
-	dao2 "github.com/miaoming3/wallpaper/core/dao"
-	response2 "github.com/miaoming3/wallpaper/http/response"
-	"github.com/miaoming3/wallpaper/http/response/dro"
-	"github.com/miaoming3/wallpaper/response"
-	"github.com/miaoming3/wallpaper/utils"
+	"github.com/miaoming3/wallpaper/app/core/dao"
+	"github.com/miaoming3/wallpaper/app/dto"
+	"github.com/miaoming3/wallpaper/app/response"
+	response2 "github.com/miaoming3/wallpaper/app/response"
+	"github.com/miaoming3/wallpaper/app/response/dro"
+	"github.com/miaoming3/wallpaper/app/utils"
 )
 
 type ImageServer struct {
@@ -22,7 +22,7 @@ func (is *ImageServer) IndexServer(c *gin.Context, di interface{}) *response.Api
 	if !ok {
 		return response2.ApiError(response2.ACCESSERROR, nil)
 	}
-	condition := dao2.NewQueryOption()
+	condition := dao.NewQueryOption()
 	condition.AddPreload("Category", nil)
 	condition.AddPreload("User", nil)
 	condition.AddPreload("Tags", nil)
@@ -43,11 +43,11 @@ func (is *ImageServer) IndexServer(c *gin.Context, di interface{}) *response.Api
 	}
 	page := c.GetInt("page")
 	pageSize := c.GetInt("pageSize")
-	images, err := dao2.NewImagesDao().FindByAll(condition, page, pageSize)
+	images, err := dao.NewImagesDao().FindByAll(condition, page, pageSize)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
-	total, err := dao2.NewImagesDao().FindByTotal(condition)
+	total, err := dao.NewImagesDao().FindByTotal(condition)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
@@ -65,7 +65,7 @@ func (is *ImageServer) UpdateServer(c *gin.Context, di interface{}) *response.Ap
 		return response2.ApiError(response2.ACCESSERROR, nil)
 	}
 	condition := map[string]interface{}{"id": data.ID}
-	total, err := dao2.NewImagesDao().FindByTotal(condition)
+	total, err := dao.NewImagesDao().FindByTotal(condition)
 
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
@@ -75,7 +75,7 @@ func (is *ImageServer) UpdateServer(c *gin.Context, di interface{}) *response.Ap
 		return response2.ApiError(response2.NotFoundImages, err)
 	}
 	condition = map[string]interface{}{"id": data.CID}
-	total, err = dao2.NewCategoryDao().FindByTotal(condition)
+	total, err = dao.NewCategoryDao().FindByTotal(condition)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
@@ -84,7 +84,7 @@ func (is *ImageServer) UpdateServer(c *gin.Context, di interface{}) *response.Ap
 		return response2.ApiError(response2.NotFoundCategory, err)
 	}
 
-	err = dao2.NewImagesDao().UpdateImage(data)
+	err = dao.NewImagesDao().UpdateImage(data)
 	if err != nil {
 		return response2.ApiError(response2.SaveCategoryErr, err)
 	}
@@ -97,7 +97,7 @@ func (is *ImageServer) CreateServer(c *gin.Context, di interface{}) *response.Ap
 	}
 
 	condition := map[string]interface{}{"id": data.CID}
-	total, err := dao2.NewCategoryDao().FindByTotal(condition)
+	total, err := dao.NewCategoryDao().FindByTotal(condition)
 	if err != nil {
 		return response2.ApiError(response2.ACCESSERROR, err)
 	}
@@ -105,7 +105,7 @@ func (is *ImageServer) CreateServer(c *gin.Context, di interface{}) *response.Ap
 		return response2.ApiError(response2.NotFoundCategory, err)
 	}
 
-	err = dao2.NewImagesDao().SaveImage(data, uint(c.GetInt("user_uid")))
+	err = dao.NewImagesDao().SaveImage(data, uint(c.GetInt("user_uid")))
 	if err != nil {
 		return response2.ApiError(response2.SaveCategoryErr, err)
 	}

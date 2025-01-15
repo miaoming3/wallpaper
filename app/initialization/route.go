@@ -3,10 +3,10 @@ package initialization
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	v12 "github.com/miaoming3/wallpaper/app/controller/v1"
+	"github.com/miaoming3/wallpaper/app/global"
+	"github.com/miaoming3/wallpaper/app/response"
 	docs "github.com/miaoming3/wallpaper/docs"
-	v12 "github.com/miaoming3/wallpaper/http/controller/v1"
-	"github.com/miaoming3/wallpaper/http/global"
-	"github.com/miaoming3/wallpaper/http/response"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"

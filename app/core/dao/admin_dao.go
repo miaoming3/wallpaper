@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"github.com/miaoming3/wallpaper/core/models"
-	"github.com/miaoming3/wallpaper/http/global"
+	"github.com/miaoming3/wallpaper/app/core/models"
+	"github.com/miaoming3/wallpaper/app/global"
 	"gorm.io/gorm"
 )
 

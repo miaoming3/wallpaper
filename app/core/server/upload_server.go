@@ -2,22 +2,21 @@ package server
 
 import (
 	"fmt"
-	"github.com/miaoming3/wallpaper/http/global"
-	response2 "github.com/miaoming3/wallpaper/http/response"
-	"github.com/miaoming3/wallpaper/http/response/dro"
+	"github.com/miaoming3/wallpaper/app/global"
+	response2 "github.com/miaoming3/wallpaper/app/response"
+	"github.com/miaoming3/wallpaper/app/response/dro"
+	"github.com/miaoming3/wallpaper/app/utils"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
 
-	"github.com/miaoming3/wallpaper/utils"
-
 	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/controller/dto"
-	"github.com/miaoming3/wallpaper/response"
+	"github.com/miaoming3/wallpaper/app/dto"
+	"github.com/miaoming3/wallpaper/app/response"
 )
 
 type UploadServer struct {

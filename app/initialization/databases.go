@@ -2,8 +2,8 @@ package initialization
 
 import (
 	"fmt"
-	models2 "github.com/miaoming3/wallpaper/core/models"
-	"github.com/miaoming3/wallpaper/http/global"
+	"github.com/miaoming3/wallpaper/app/core/models"
+	"github.com/miaoming3/wallpaper/app/global"
 	"log"
 	"os"
 	"time"
@@ -67,7 +67,7 @@ func InitDataBases() {
 
 func autoMigrate() {
 	_ = global.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
-		&models2.Admin{}, &models2.Category{}, &models2.Users{}, &models2.Image{},
-		&models2.Tags{}, &models2.ImageTags{},
+		&models.Admin{}, &models.Category{}, &models.Users{}, &models.Image{},
+		&models.Tags{}, &models.ImageTags{},
 	)
 }

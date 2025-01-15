@@ -2,10 +2,10 @@ package dao
 
 import (
 	"fmt"
-	"github.com/miaoming3/wallpaper/core/models"
-	"github.com/miaoming3/wallpaper/http/global"
+	"github.com/miaoming3/wallpaper/app/core/models"
+	"github.com/miaoming3/wallpaper/app/global"
 
-	"github.com/miaoming3/wallpaper/controller/dto"
+	"github.com/miaoming3/wallpaper/app/dto"
 	"gorm.io/gorm"
 )
 

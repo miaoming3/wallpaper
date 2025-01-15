@@ -2,9 +2,9 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/controller/dto"
-	"github.com/miaoming3/wallpaper/core/server"
-	response2 "github.com/miaoming3/wallpaper/http/response"
+	"github.com/miaoming3/wallpaper/app/core/server"
+	"github.com/miaoming3/wallpaper/app/dto"
+	response2 "github.com/miaoming3/wallpaper/app/response"
 )
 
 type AdminController struct {

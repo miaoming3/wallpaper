@@ -2,15 +2,15 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	server2 "github.com/miaoming3/wallpaper/core/server"
+	"github.com/miaoming3/wallpaper/app/core/server"
 )
 
 type TagsController struct {
-	server2.BaseServiceInterface
+	server.BaseServiceInterface
 }
 
 func NewTagsController() *TagsController {
-	return &TagsController{server2.NewMenuServe()}
+	return &TagsController{server.NewMenuServe()}
 }
 
 func (ac *TagsController) Index(c *gin.Context) {
