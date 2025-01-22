@@ -3,8 +3,10 @@ package server
 import (
 	"fmt"
 	"github.com/miaoming3/wallpaper/app/global"
+	"github.com/miaoming3/wallpaper/app/message"
+	"github.com/miaoming3/wallpaper/app/message/dro"
+	"github.com/miaoming3/wallpaper/app/message/dto"
 	response2 "github.com/miaoming3/wallpaper/app/response"
-	"github.com/miaoming3/wallpaper/app/response/dro"
 	"github.com/miaoming3/wallpaper/app/utils"
 	"net/http"
 	"os"
@@ -15,7 +17,6 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/app/dto"
 	"github.com/miaoming3/wallpaper/app/response"
 )
 
@@ -28,18 +29,18 @@ func NewUploadServer() UploadServer {
 func (us *UploadServer) UploadOneFile(c *gin.Context, file *dto.UploadFile) *response.APi {
 	ext := filepath.Ext(file.File.Filename)
 	if !us.IsExtensionAllowed(ext) {
-		return response2.ApiError(response2.UploadNotSupportExt, nil)
+		return response2.ApiError(message.UploadNotSupportExt, nil)
 	}
 	if file.File.Size > global.SysConfig.UploadFileSize {
-		return response2.ApiError(response2.UploadMaxSize, nil)
+		return response2.ApiError(message.UploadMaxSize, nil)
 	}
 	uploadDir := filepath.Join(global.SysConfig.Dir, (time.Now()).Format("2006-01-02"))
 	if err := us.IsMakeDirectoryCreate(uploadDir); err != nil {
-		return response2.ApiError(response2.UploadCreateDirErr, err)
+		return response2.ApiError(message.UploadCreateDirErr, err)
 	}
 	saveFileName := filepath.Join(uploadDir, uuid.New().String()+ext)
 	if err := c.SaveUploadedFile(&file.File, saveFileName); err != nil {
-		return response2.ApiError(response2.UploadSaveError, err)
+		return response2.ApiError(message.UploadSaveError, err)
 	}
 
 	return response2.ApiSuccess(dro.UploadResponseData{
@@ -57,18 +58,18 @@ func (us *UploadServer) UploadsFileMust(c *gin.Context, file *dto.UploadFileMust
 		ext := filepath.Ext(v.Filename)
 		if !us.IsExtensionAllowed(ext) {
 			updateResponse = append(updateResponse, dro.UploadResponseData{
-				Code:  response2.UploadNotSupportExt,
+				Code:  message.UploadNotSupportExt,
 				Error: nil,
-				Msg:   response2.GetMessage(response2.UploadNotSupportExt),
+				Msg:   message.GetMessage(message.UploadNotSupportExt),
 				Key:   k + 1,
 			})
 			continue
 		}
 		if v.Size > global.SysConfig.UploadFileSize {
 			updateResponse = append(updateResponse, dro.UploadResponseData{
-				Code:  response2.UploadMaxSize,
+				Code:  message.UploadMaxSize,
 				Error: nil,
-				Msg:   response2.GetMessage(response2.UploadMaxSize),
+				Msg:   message.GetMessage(message.UploadMaxSize),
 				Key:   k + 1,
 			})
 			continue
@@ -77,9 +78,9 @@ func (us *UploadServer) UploadsFileMust(c *gin.Context, file *dto.UploadFileMust
 		uploadDir := filepath.Join(global.SysConfig.Dir, (time.Now()).Format("2006-01-02"))
 		if err := us.IsMakeDirectoryCreate(uploadDir); err != nil {
 			updateResponse = append(updateResponse, dro.UploadResponseData{
-				Code:  response2.UploadCreateDirErr,
+				Code:  message.UploadCreateDirErr,
 				Error: nil,
-				Msg:   response2.GetMessage(response2.UploadCreateDirErr),
+				Msg:   message.GetMessage(message.UploadCreateDirErr),
 				Key:   k + 1,
 			})
 			continue
@@ -87,9 +88,9 @@ func (us *UploadServer) UploadsFileMust(c *gin.Context, file *dto.UploadFileMust
 		saveFileName := filepath.Join(uploadDir, uuid.New().String()+ext)
 		if err := c.SaveUploadedFile(&v, saveFileName); err != nil {
 			updateResponse = append(updateResponse, dro.UploadResponseData{
-				Code:  response2.UploadSaveError,
+				Code:  message.UploadSaveError,
 				Error: err,
-				Msg:   response2.GetMessage(response2.UploadSaveError),
+				Msg:   message.GetMessage(message.UploadSaveError),
 				Key:   k + 1,
 			})
 			continue

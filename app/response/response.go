@@ -1,6 +1,7 @@
 package response
 
 import (
+	"github.com/miaoming3/wallpaper/app/message"
 	"net/http"
 	"reflect"
 
@@ -42,7 +43,7 @@ func ApiError(code uint, err error) *APi {
 	return &APi{
 		Code: code,
 		Data: []string{},
-		Msg:  GetMessage(code),
+		Msg:  message.GetMessage(code),
 		Err:  err,
 	}
 }
@@ -66,11 +67,4 @@ func ApiPageSuccess(data interface{}, total int64, page int, size int, next bool
 
 func Response(c *gin.Context, response *APi) {
 	c.JSON(http.StatusOK, response)
-}
-
-func GetMessage(code uint) string {
-	if message, exists := messageString[code]; exists {
-		return message
-	}
-	return "服务器内部错误"
 }
