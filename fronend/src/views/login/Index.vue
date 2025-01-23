@@ -1,38 +1,77 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import {onMounted, reactive, ref} from 'vue'
+import {getCaptcha} from "@/assets/js/common";
+import {Login} from "@/assets/js/admin";
+import {ElForm, FormInstance, ElMessage} from "element-plus";
+import router from "@/router";
 const form = reactive({
   username: '',
   password: '',
-  captcha: ''
+  captcha: '',
+  id: ''
 })
 
 const  rules = reactive({
   username:[{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password:[{ required: true, message: '请输入密码', trigger: 'blur' }]
+  password:[{ required: true, message: '请输入密码', trigger: 'blur' }],
+  captcha:[{required: true, message: '请输入验证码', trigger: 'blur'}]
 })
 
-const src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"
-const onSubmit = () => {
-  console.log('submit')
+
+const formRef = ref<InstanceType<typeof ElForm> | null>(null);
+const onSubmit = async () => {
+  try {
+    if (!formRef.value) return
+    await formRef.value.validate((valid) => {
+      if(!valid) return
+    })
+    const res = await Login(form)
+    if(res.code !==0){
+      Captcha()
+      ElMessage.error(res.msg)
+      return
+    }
+    localStorage.setItem("token",res.data.token)
+    ElMessage.success({message: '登录成功,即将进入后台', duration: 1000})
+    setTimeout(function (){
+      router.push({"path":"admin"})
+    },1000)
+
+
+  }catch (e) {
+    ElMessage.error("网络超时")
+  }
+
 }
+let srcImg= ref('');
+const Captcha=()=>{
+   getCaptcha().then((res)=>{
+     srcImg.value=res.data.captcha
+     form.id=res.data.id
+   }).catch((err)=>{
+     ElMessage.error("网络超时")
+   })
+}
+onMounted(()=>{
+  Captcha()
+})
 </script>
 
 <template>
   <div id="login">
     <div class="container">
       <h1>管理员登录</h1>
-      <el-form  class="login-form" :model="form" :rules="rules" :size="'large'" label-width="auto" label-position="top" status-icon>
+      <el-form ref="formRef"  class="login-form" :model="form" :rules="rules" :size="'large'" label-width="auto" label-position="top" status-icon>
         <el-form-item prop="username">
           <el-input v-model="form.username" placeholder="用户名"/>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="form.password" type="password" placeholder="密码" />
+          <el-input v-model="form.password" show-password placeholder="密码" />
         </el-form-item>
-        <el-form-item prop="captcha">
-
+        <el-form-item prop="captcha" >
           <el-input v-model="form.captcha"  placeholder="验证码">
             <template #append>
-              <el-image :src="src">
+              <el-image :src="srcImg"  @click="Captcha">
                 <template #placeholder>
                   <div class="image-slot">Loading<span class="dot">...</span></div>
                 </template>

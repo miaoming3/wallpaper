@@ -1,8 +1,6 @@
 package dro
 
-type AdminLoginResponse struct {
-	Token      string `json:"token"`
-	Expression string `json:"expression"`
-	Username   string `json:"username"`
-	UID        string `json:"uid"`
+type LoginResponse struct {
+	Uid   uint   `json:"uid"`
+	Token string `json:"token"`
 }

@@ -2,17 +2,16 @@ package initialization
 
 import (
 	"fmt"
-	"github.com/miaoming3/wallpaper/app/core/models"
 	"github.com/miaoming3/wallpaper/app/global"
+	"github.com/miaoming3/wallpaper/app/models"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 	"os"
 	"time"
 
 	"gorm.io/driver/mysql"
-	"gorm.io/gorm/logger"
-	"gorm.io/gorm/schema"
-
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func RetryableOpenDatabase(dsn string, config *gorm.Config, retries int, retryInterval time.Duration) (*gorm.DB, error) {
@@ -41,11 +40,7 @@ func InitDataBases() {
 				IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
 				ParameterizedQueries:      false,       // Don't include params in the SQL log
 				Colorful:                  false,       // Disable color
-			}),
-		NamingStrategy: schema.NamingStrategy{
-			TablePrefix: baseConfig.Prefix,
-		},
-	}, 3, 2*time.Second) // 尝试3次，每次间隔2秒
+			})}, 3, 2*time.Second) // 尝试3次，每次间隔2秒
 	if err != nil {
 		log.Fatalf("无法连接到数据库: %v", err) // 在无法连接时，使用Fatalf记录致命错误并退出程序
 	}
@@ -67,7 +62,11 @@ func InitDataBases() {
 
 func autoMigrate() {
 	_ = global.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
-		&models.Admin{}, &models.Category{}, &models.Users{}, &models.Image{},
-		&models.Tags{}, &models.ImageTags{},
+		&models.AdminModel{},
 	)
+	pwdbyte, _ := bcrypt.GenerateFromPassword([]byte("dx067870"), bcrypt.DefaultCost)
+	global.DbClient.Model(&models.AdminModel{}).Where("username =? and status= ?", "admin", 1).FirstOrCreate(&models.AdminModel{
+		Username: "admin",
+		Password: string(pwdbyte),
+	})
 }
