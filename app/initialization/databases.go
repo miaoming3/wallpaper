@@ -36,10 +36,10 @@ func InitDataBases() {
 			log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 			logger.Config{
 				SlowThreshold:             time.Second, // Slow SQL threshold
-				LogLevel:                  logger.Info, // Log level
+				LogLevel:                  logger.Warn, // Log level
 				IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
 				ParameterizedQueries:      false,       // Don't include params in the SQL log
-				Colorful:                  false,       // Disable color
+				Colorful:                  true,        // Disable color
 			})}, 3, 2*time.Second) // 尝试3次，每次间隔2秒
 	if err != nil {
 		log.Fatalf("无法连接到数据库: %v", err) // 在无法连接时，使用Fatalf记录致命错误并退出程序

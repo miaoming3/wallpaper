@@ -9,6 +9,7 @@ import (
 func init() {
 	initialization.InitConfig("")
 	initialization.InitDataBases()
+	initialization.InitValidate()
 
 }
 
