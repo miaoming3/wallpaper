@@ -37,3 +37,30 @@ func (admin *AdminController) ChangePassword(c *gin.Context) {
 	}
 	response.Response(c, server.NewAdminServer().ChangePassword(c, &changeData))
 }
+
+func (admin *AdminController) Index(c *gin.Context) {
+
+}
+func (admin *AdminController) Created(c *gin.Context) {
+
+}
+
+func (admin *AdminController) ChangeInfo(c *gin.Context) {
+	var changeInfo dto.ChangeAdminInfo
+
+	if err := c.ShouldBind(&changeInfo); err != nil {
+		response.Response(c, response.ApiError(message.CLIENTERROR, err))
+		return
+	}
+	response.Response(c, server.NewAdminServer().ChangeInfo(c, &changeInfo))
+}
+
+func (admin *AdminController) Updated(c *gin.Context) {
+
+}
+func (admin *AdminController) Delete(c *gin.Context) {
+
+}
+func (admin *AdminController) Logout(c *gin.Context) {
+	response.Response(c, server.NewAdminServer().Logout(c))
+}

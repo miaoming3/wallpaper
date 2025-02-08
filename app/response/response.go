@@ -39,7 +39,6 @@ func ApiSuccess(data interface{}) *APi {
 }
 
 func ApiError(code uint, err error) *APi {
-
 	return &APi{
 		Code: code,
 		Data: []string{},

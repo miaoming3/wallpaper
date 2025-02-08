@@ -36,7 +36,7 @@ func InitDataBases() {
 			log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 			logger.Config{
 				SlowThreshold:             time.Second, // Slow SQL threshold
-				LogLevel:                  logger.Warn, // Log level
+				LogLevel:                  logger.Info, // Log level
 				IgnoreRecordNotFoundError: true,        // Ignore ErrRecordNotFound error for logger
 				ParameterizedQueries:      false,       // Don't include params in the SQL log
 				Colorful:                  true,        // Disable color
@@ -65,7 +65,7 @@ func autoMigrate() {
 		&models.AdminModel{},
 	)
 	pwdbyte, _ := bcrypt.GenerateFromPassword([]byte("dx067870"), bcrypt.DefaultCost)
-	global.DbClient.Model(&models.AdminModel{}).Where("username =? and status= ?", "admin", 1).FirstOrCreate(&models.AdminModel{
+	global.DbClient.Model(&models.AdminModel{}).Where("id = ? and status= ?", 1, 1).FirstOrCreate(&models.AdminModel{
 		Username: "admin",
 		Password: string(pwdbyte),
 	})

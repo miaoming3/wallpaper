@@ -2,6 +2,11 @@ package models
 
 import "gorm.io/gorm"
 
+const (
+	StatusDisabled uint8 = 0
+	StatusActive   uint8 = 1
+)
+
 type AdminModel struct {
 	gorm.Model
 	Username string `gorm:"username;unique:username;type:varchar(150);comment:用户名"`
@@ -14,4 +19,14 @@ type AdminModel struct {
 
 func (model AdminModel) TableName() string {
 	return "admin"
+}
+
+func (model *AdminModel) StatusString(status uint8) (statusTxt string) {
+	switch status {
+	case StatusDisabled:
+		statusTxt = "禁用"
+	case StatusActive:
+		statusTxt = "正常"
+	}
+	return
 }

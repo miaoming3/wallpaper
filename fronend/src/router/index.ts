@@ -19,9 +19,13 @@ const routes: Array<RouteRecordRaw> = [
       }
     },
     children:[{
-      path:"/",
+      path:"",
       name:"dash",
       component:import('../views/dash/Index.vue')
+    },{
+      path:"info",
+      name:"adminInfo",
+      component:import('../views/admin/Info.vue')
     },{
       path:"changePassword",
       name:"changePassword",

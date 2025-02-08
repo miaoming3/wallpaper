@@ -4,6 +4,8 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"math/rand"
 	"time"
 )
@@ -45,4 +47,16 @@ func ResponseJsonUnmarshal(data interface{}, responseData interface{}) error {
 		return err
 	}
 	return nil
+}
+
+func RemoteUrl(c *gin.Context, imgUrl string) string {
+	scheme := c.Request.Header.Get("X-Forwarded-Proto")
+	if scheme == "" {
+		scheme = "http"
+		if c.Request.TLS != nil {
+			scheme = "https"
+		}
+	}
+
+	return fmt.Sprintf("%v://%v/%v", scheme, c.Request.Host, imgUrl)
 }

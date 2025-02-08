@@ -1,6 +1,7 @@
 package global
 
 import (
+	"github.com/go-redis/redis/v8"
 	"github.com/miaoming3/wallpaper/app/config"
 	"github.com/mojocn/base64Captcha"
 	"go.uber.org/zap"
@@ -12,4 +13,5 @@ var (
 	DbClient    *gorm.DB
 	Captcha     *base64Captcha.Captcha
 	SugarLogger *zap.SugaredLogger
+	RedisClien  *redis.Client
 )

@@ -5,6 +5,7 @@ import (
 	"github.com/miaoming3/wallpaper/app/global"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -12,12 +13,15 @@ import (
 
 func InitLoggers() {
 
-	logger := zap.New(zapcore.NewCore(getEncoder(), encode(), zapcore.DebugLevel))
+	logger := zap.New(zapcore.NewCore(getEncoder(), encode(), zapcore.DebugLevel), zap.AddCaller())
 	global.SugarLogger = logger.Sugar()
 }
 
 func encode() zapcore.WriteSyncer {
-	path := filepath.Join(global.SysConfig.LoggerConfig.Director, time.Now().Format(time.DateTime), "log.txt")
+	path := filepath.Join(global.SysConfig.Director, "log.txt")
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+		log.Panicln("创建日志文件失败")
+	}
 	file, _ := os.Create(path)
 	return zapcore.AddSync(file)
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onMounted, reactive, ref} from 'vue'
-import {getCaptcha} from "@/assets/js/common";
-import {Login} from "@/assets/js/admin";
+import {getCaptcha} from "@/assets/api/common";
+import {Login} from "@/assets/api/admin";
 import {ElForm, FormInstance, ElMessage} from "element-plus";
 import router from "@/router";
 const form = reactive({
@@ -21,10 +21,7 @@ const  rules = reactive({
 const formRef = ref<InstanceType<typeof ElForm> | null>(null);
 const onSubmit = async () => {
   try {
-    if (!formRef.value) return
-    await formRef.value.validate((valid) => {
-      if(!valid) return
-    })
+    if ((!formRef.value)||(!(await formRef.value.validate())))  return;
     const res = await Login(form)
     if(res.code !==0){
       Captcha()
@@ -32,14 +29,16 @@ const onSubmit = async () => {
       return
     }
     localStorage.setItem("token",res.data.token)
+    localStorage.setItem("uid",res.data.uid)
     ElMessage.success({message: '登录成功,即将进入后台', duration: 1000})
     setTimeout(function (){
-      router.push({"path":"admin"})
+      router.replace({"path":"admin"})
     },1000)
 
-
   }catch (e) {
-    ElMessage.error("网络超时")
+    if(e.message){
+      ElMessage.error("网络错误")
+    }
   }
 
 }

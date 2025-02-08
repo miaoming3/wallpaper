@@ -21,7 +21,7 @@ func (dao *AdminDao) FindByName(username string, status int) (admin *models.Admi
 	return
 }
 
-func (dao *AdminDao) FindById(uid uint, status int) (admin *models.AdminModel, err error) {
+func (dao *AdminDao) FindById(uid int, status int) (admin *models.AdminModel, err error) {
 
 	if err = dao.Model(&models.AdminModel{}).Where("id = ? and status = ?", uid, status).First(&admin).Error; err != nil {
 		return &models.AdminModel{}, err
@@ -29,10 +29,10 @@ func (dao *AdminDao) FindById(uid uint, status int) (admin *models.AdminModel, e
 	return
 }
 
-func (dao *AdminDao) UpdateCol(col string, val interface{}, conditions interface{}) error {
-	return dao.Model(&models.AdminModel{}).Attrs(conditions).Update(col, val).Error
+func (dao *AdminDao) UpdateCol(col string, val interface{}, adminModel *models.AdminModel) error {
+	return dao.Model(&models.AdminModel{}).Where("id =? and status= ?", adminModel.ID, adminModel.Status).Update(col, val).Error
 }
 
 func (dao *AdminDao) UpdateCols(admin *models.AdminModel) error {
-	return dao.Model(&models.AdminModel{}).Updates(&admin).Error
+	return dao.Model(&models.AdminModel{}).Where("id = ?", admin.ID).Updates(&admin).Error
 }

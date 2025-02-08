@@ -1,6 +1,10 @@
-import instance from "@/request/request";
+import {ElMessage} from "element-plus";
+import {Logout} from "@/assets/api/admin";
+import router from "@/router";
 
 
-export  function getCaptcha() {
-    return instance.get("/captcha")
-}
+export  const logout={
+    methods: {
+
+    }
+};

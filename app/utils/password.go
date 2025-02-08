@@ -16,5 +16,5 @@ func GeneratePassword(password string) (string, error) {
 
 func ComparePoserPassword(hash_password string, password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash_password), []byte(password))
-	return err != nil
+	return err == nil
 }

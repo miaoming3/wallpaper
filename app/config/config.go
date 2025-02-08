@@ -7,6 +7,8 @@ type Config struct {
 	*UploadConfig   `yaml:"upload_config" json:"upload_config" mapstructure:"upload_config"`
 	*CaptchaConfig  `yaml:"captcha_config" json:"captcha_config" mapstructure:"captcha_config"`
 	*LoggerConfig   `yaml:"logger_config" mapstructure:"logger_config"`
+	RedisConfig     *RedisConfig `yaml:"redis_config" mapstructure:"redis_config"`
+	AesKey          string       `yaml:"aes_key" mapstructure:"aes_key"`
 }
 
 type DataBaseConfig struct {
@@ -43,4 +45,12 @@ type LoggerConfig struct {
 	ShowLine     bool   `yaml:"show_line" mapstructure:"show_line"`           // 是否显示行号
 	Level        int8   `yaml:"level" mapstructure:"level"`                   // 是否显示行号
 	LogInConsole bool   `yaml:"log_in_console" mapstructure:"log_in_console"` // 是否显示打印日志
+}
+
+type RedisConfig struct {
+	Username string `yaml:"username" mapstructure:"username" `
+	Password string `yaml:"password" mapstructure:"password" `
+	Host     string `yaml:"host" mapstructure:"host"`
+	Port     int    `yaml:"port" mapstructure:"port"`
+	Db       int    `yaml:"db" mapstructure:"db"`
 }

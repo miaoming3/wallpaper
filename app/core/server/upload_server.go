@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"github.com/miaoming3/wallpaper/app/global"
 	"github.com/miaoming3/wallpaper/app/message"
 	"github.com/miaoming3/wallpaper/app/message/dro"
@@ -31,7 +30,7 @@ func (us *UploadServer) UploadOneFile(c *gin.Context, file *dto.UploadFile) *res
 	if !us.IsExtensionAllowed(ext) {
 		return response2.ApiError(message.UploadNotSupportExt, nil)
 	}
-	if file.File.Size > global.SysConfig.UploadFileSize {
+	if file.File.Size/1024 > global.SysConfig.UploadFileSize {
 		return response2.ApiError(message.UploadMaxSize, nil)
 	}
 	uploadDir := filepath.Join(global.SysConfig.Dir, (time.Now()).Format("2006-01-02"))
@@ -42,18 +41,24 @@ func (us *UploadServer) UploadOneFile(c *gin.Context, file *dto.UploadFile) *res
 	if err := c.SaveUploadedFile(&file.File, saveFileName); err != nil {
 		return response2.ApiError(message.UploadSaveError, err)
 	}
-
 	return response2.ApiSuccess(dro.UploadResponseData{
 		Path: saveFileName,
 		Salt: utils.Md5(file.File.Filename),
-		Url:  fmt.Sprintf("%v/%v", c.Request.Host, saveFileName),
-		Host: c.Request.Host,
+		Url:  utils.RemoteUrl(c, saveFileName),
+		Host: utils.RemoteUrl(c, ""),
 	})
 
 }
 
 func (us *UploadServer) UploadsFileMust(c *gin.Context, file *dto.UploadFileMust) *response.APi {
 	var updateResponse []dro.UploadResponseData
+	scheme := c.Request.Header.Get("X-Forwarded-Proto")
+	if scheme == "" {
+		scheme = "http"
+		if c.Request.TLS != nil {
+			scheme = "https"
+		}
+	}
 	for k, v := range file.File {
 		ext := filepath.Ext(v.Filename)
 		if !us.IsExtensionAllowed(ext) {
@@ -100,9 +105,9 @@ func (us *UploadServer) UploadsFileMust(c *gin.Context, file *dto.UploadFileMust
 			Msg:  "Success",
 			Path: saveFileName,
 			Salt: utils.Md5(v.Filename),
-			Host: c.Request.Host,
 			Key:  k + 1,
-			Url:  fmt.Sprintf("%v/%v", c.Request.Host, saveFileName),
+			Url:  utils.RemoteUrl(c, saveFileName),
+			Host: utils.RemoteUrl(c, ""),
 		})
 	}
 	return response2.ApiSuccess(updateResponse)

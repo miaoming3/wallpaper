@@ -10,6 +10,7 @@ func init() {
 	initialization.InitConfig("")
 	initialization.InitCaptcha()
 	initialization.InitDataBases()
+	initialization.InitRedis()
 	initialization.InitValidate()
 }
 

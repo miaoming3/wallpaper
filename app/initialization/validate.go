@@ -6,7 +6,8 @@ import (
 )
 
 var customizeValidate = map[string]validator.Func{
-	"isTags": IsTage,
+	"isTags":  IsTage,
+	"isPhone": IsPhone,
 }
 
 func InitValidate() {
@@ -20,4 +21,8 @@ func InitValidate() {
 
 func IsTage(fl validator.FieldLevel) bool {
 	return false
+}
+
+func IsPhone(fl validator.FieldLevel) bool {
+	return true
 }

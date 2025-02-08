@@ -33,4 +33,5 @@ func InitConfig(path string) {
 		log.Panicf("config unmarshal  err: %v", err)
 	}
 
+	fmt.Println(global.SysConfig.LoggerConfig)
 }

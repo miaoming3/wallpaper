@@ -1,23 +1,28 @@
 package message
 
 const (
-	ACCESSERROR uint = 500
-	CLIENTERROR uint = 400
+	ACCESSERROR  uint = 500
+	CLIENTERROR  uint = 400
+	Unauthorized uint = 401
 	//1100- 1199 验证码的错误码
 	CAPTCHAERROR uint = 1100
 
 	//管理员错误码 1300 - 1600
-	ADMINORPASSWORD uint = 1300
+	ADMINORPASSWORD uint = iota + 1296
+	AdminStatusNone
+	AdminChangeError
+	PasswordError
+	NotFoundRow
 
 	//分类信息错误
-	CategoryNameErr     uint = 1500
-	SaveCategoryErr     uint = 1501
-	NotFoundPid         uint = 1502
-	CategoryParentError uint = 1503
-	NotFoundError       uint = 1504
-	FoundSUCCESS        uint = 1505
-	DeleteError         uint = 1506
-	NotFoundCategory    uint = 1507
+	CategoryNameErr uint = iota + 1494
+	SaveCategoryErr
+	NotFoundPid
+	CategoryParentError
+	NotFoundError
+	FoundSUCCESS
+	DeleteError
+	NotFoundCategory
 
 	//图片错误
 
@@ -31,10 +36,13 @@ const (
 )
 
 var messageTxt = map[uint]string{
-	ACCESSERROR:     "服务器内部错误",
-	CLIENTERROR:     "客户端错误",
-	CAPTCHAERROR:    "验证码错误",
-	ADMINORPASSWORD: "用户名或密码错误",
+	ACCESSERROR:      "服务器内部错误",
+	CLIENTERROR:      "客户端错误",
+	CAPTCHAERROR:     "验证码错误",
+	Unauthorized:     "用户未授权",
+	ADMINORPASSWORD:  "用户名或密码错误",
+	AdminStatusNone:  "超级管理员不能禁用状态",
+	AdminChangeError: "修改失败",
 
 	CategoryNameErr:     "分类名已经存在",
 	SaveCategoryErr:     "保存失败",

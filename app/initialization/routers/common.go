@@ -18,7 +18,7 @@ func CommonRouter(r *gin.Engine) {
 		c.AbortWithStatusJSON(http.StatusNotFound, response.ApiError(http.StatusNotFound, nil))
 	})
 	r.Static(global.SysConfig.Dir, filepath.Join("./", global.SysConfig.Dir))
-	r.Use(middleware.CoreMiddleware(), middleware.LoggerMiddleware())
+	r.Use(middleware.LoggerMiddleware(), middleware.CoreMiddleware())
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	BaseRouters(r)
