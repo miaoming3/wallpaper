@@ -129,13 +129,7 @@ const onSubmit = async () => {
   text-align: center;
 }
 #admin-info {
-  .el-breadcrumb {
-    font-size: 16px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #f4f4f4;
-    padding: 20px;
-    background: #faf7f7;
-  }
+
   .info-form {
     padding: 20px 0;
     max-width: 600px;

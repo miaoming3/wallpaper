@@ -39,7 +39,12 @@ func (admin *AdminController) ChangePassword(c *gin.Context) {
 }
 
 func (admin *AdminController) Index(c *gin.Context) {
-
+	var adminSearch dto.AdminSearch
+	if err := c.ShouldBind(&adminSearch); err != nil {
+		response.Response(c, response.ApiError(message.CLIENTERROR, err))
+		return
+	}
+	response.Response(c, server.NewAdminServer().List(c, &adminSearch))
 }
 func (admin *AdminController) Created(c *gin.Context) {
 

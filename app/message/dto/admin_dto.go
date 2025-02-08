@@ -26,3 +26,10 @@ type ChangeAdminInfo struct {
 	Phone  string `json:"phone" form:"phone" binding:"required,isPhone"`
 	Avatar string `json:"avatar" form:"avatar"`
 }
+
+type AdminSearch struct {
+	Email    string `json:"email" form:"email" uri:"email"`
+	Phone    string `json:"phone" form:"phone" uri:"phone"`
+	Username string `json:"username" form:"username" uri:"username" `
+	Status   string `json:"status" form:"status" uri:"status"`
+}

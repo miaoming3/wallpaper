@@ -14,7 +14,7 @@ const props = defineProps({
     <el-menu
         :default-active="props.activeIndex"
         class="el-menu-vertical-demo"
-        router="true"
+        router=true
     >
       <el-menu-item index="/admin">
         <el-icon><DataBoard /></el-icon>
@@ -55,6 +55,7 @@ const props = defineProps({
           <span>图片管理</span>
         </template>
         <el-menu-item index="/admin/img/index">图片列表</el-menu-item>
+        <el-menu-item index="/admin/img/tags">标签列表</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="/setting">
         <template #title>

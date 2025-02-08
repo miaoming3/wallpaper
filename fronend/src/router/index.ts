@@ -27,6 +27,10 @@ const routes: Array<RouteRecordRaw> = [
       name:"adminInfo",
       component:import('../views/admin/Info.vue')
     },{
+      path:"index",
+      name:"adminIndex",
+      component:import('../views/admin/Index.vue')
+    },{
       path:"changePassword",
       name:"changePassword",
       component:import('../views/admin/Change-password.vue')
@@ -57,6 +61,10 @@ const routes: Array<RouteRecordRaw> = [
         path:"index",
         name:"imgIndex",
         component:import('../views/images/Index.vue')
+      },{
+        path:"tags",
+        name:"imgTags",
+        component:import('../views/tags/Index.vue')
       }]
     },{
       path:"menu",

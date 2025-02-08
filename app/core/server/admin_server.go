@@ -99,6 +99,48 @@ func (admin *AdminServer) ChangeInfo(c *gin.Context, data *dto.ChangeAdminInfo) 
 	return response.ApiSuccess(nil)
 }
 
+func (admin *AdminServer) List(c *gin.Context, data *dto.AdminSearch) *response.APi {
+	condition := map[string]interface{}{
+		"id != ?": 1,
+	}
+	if data.Status != "" {
+		condition["status = ?"] = data.Status
+	}
+	if data.Username != "" {
+		condition["username like ?"] = fmt.Sprintf("%v%%", data.Username)
+	}
+	if data.Email != "" {
+		condition["email like ?"] = fmt.Sprintf("%v%%", data.Email)
+	}
+	if data.Phone != "" {
+		condition["phone like ?"] = fmt.Sprintf("%v%%", data.Phone)
+	}
+	lists, err := dao.NewAdminDao().GetList(condition, c.GetInt("page"), c.GetInt("pageSize"))
+	if err != nil {
+		return response.ApiError(message.NotFoundError, err)
+	}
+	var adminLists []*dro.AdminInfo
+	if len(lists) > 0 {
+		for k, v := range lists {
+			_ = k
+			data := &dro.AdminInfo{
+				Id:        v.ID,
+				Status:    v.StatusString(v.Status),
+				Password:  v.Password,
+				Username:  v.Username,
+				Email:     v.Email,
+				Phone:     v.Phone,
+				ImgUrl:    utils.RemoteUrl(c, v.Avatar),
+				Avatar:    v.Avatar,
+				CreatedAt: v.CreatedAt.Format(time.DateTime),
+			}
+			adminLists = append(adminLists, data)
+		}
+
+	}
+	return response.ApiSuccess(adminLists)
+}
+
 func (admin *AdminServer) Logout(c *gin.Context) *response.APi {
 	_, _ = global.RedisClien.Del(c, fmt.Sprintf("admin:token:%v", c.GetInt("uid"))).Result()
 	return response.ApiSuccess(nil)

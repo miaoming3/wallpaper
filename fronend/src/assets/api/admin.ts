@@ -38,3 +38,11 @@ export function Logout(){
         method:"post",
     })
 }
+
+export  function  getAdminList(data:any){
+     return instance({
+         url:"api/v1/admin/index",
+         method:"get",
+         params:data
+     })
+}

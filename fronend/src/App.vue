@@ -1,5 +1,9 @@
+
 <template>
-  <router-view/>
+  <div ref="element">
+    <router-view/>
+  </div>
+
 </template>
 
 <style lang="scss">
@@ -13,3 +17,5 @@
   overflow: hidden;
 }
 </style>
+<script setup lang="ts">
+</script>
