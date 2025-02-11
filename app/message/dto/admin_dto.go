@@ -21,10 +21,10 @@ type ChangePassword struct {
 }
 
 type ChangeAdminInfo struct {
-	*CommonAdmin
-	Email  string `json:"email" form:"email" binding:"required,email"`
-	Phone  string `json:"phone" form:"phone" binding:"required,isPhone"`
-	Avatar string `json:"avatar" form:"avatar"`
+	Username string `json:"username" form:"username" binding:"required"`
+	Email    string `json:"email" form:"email" binding:"required,email"`
+	Phone    string `json:"phone" form:"phone" binding:"required,isPhone"`
+	Avatar   string `json:"avatar" form:"avatar"`
 }
 
 type AdminSearch struct {

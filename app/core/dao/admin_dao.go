@@ -22,14 +22,24 @@ func (dao *AdminDao) FindByName(username string, status int) (admin *models.Admi
 	return
 }
 
-func (dao *AdminDao) FindById(condition map[string]interface{}) (admin *models.AdminModel, err error) {
-	query := dao.Model(&models.AdminModel{})
+func (dao *AdminDao) getQuery(condition map[string]interface{}) (query *gorm.DB) {
+	query = dao.Model(&models.AdminModel{})
 	if len(condition) > 0 {
 		for k, v := range condition {
-			query.Where(k, v)
+			if strings.HasPrefix(k, "or") {
+				k = strings.ReplaceAll(k, "or", "")
+				query.Or(k, v)
+			} else {
+				query.Where(k, v)
+			}
 		}
 	}
-	if err = query.First(&admin).Error; err != nil {
+	return
+}
+
+func (dao *AdminDao) FindById(condition map[string]interface{}) (admin *models.AdminModel, err error) {
+
+	if err = dao.getQuery(condition).First(&admin).Error; err != nil {
 		return &models.AdminModel{}, err
 	}
 	return
@@ -44,27 +54,13 @@ func (dao *AdminDao) UpdateCols(admin *models.AdminModel) error {
 }
 
 func (dao *AdminDao) GetList(condition map[string]interface{}, page int, pageSize int) (adminModel []*models.AdminModel, err error) {
-	query := dao.Model(&models.AdminModel{})
-	if len(condition) > 0 {
-		for k, v := range condition {
-			query.Where(k, v)
-		}
-	}
-
-	if err = query.Offset(page - 1).Limit(pageSize).Find(&adminModel).Error; err != nil {
+	if err = dao.getQuery(condition).Offset(page - 1).Limit(pageSize).Find(&adminModel).Error; err != nil {
 		return nil, err
 	}
 	return
 }
 func (dao *AdminDao) GetTotal(condition map[string]interface{}) (total int64, err error) {
-	query := dao.Model(&models.AdminModel{})
-	if len(condition) > 0 {
-		for k, v := range condition {
-			query.Where(k, v)
-		}
-	}
-
-	if err = query.Count(&total).Error; err != nil {
+	if err = dao.getQuery(condition).Count(&total).Error; err != nil {
 		return 0, err
 	}
 	return
@@ -76,25 +72,5 @@ func (dao *AdminDao) DeleteRow(id int, forever bool, adminModel *models.AdminMod
 		query.Unscoped()
 	}
 	return query.Delete(&adminModel, id).Error
-
-}
-
-func (dao *AdminDao) UniqueFiled(condition map[string]interface{}) (bool, error) {
-	var total int64
-	query := dao.Model(&models.AdminModel{})
-	if len(condition) > 0 {
-		for k, v := range condition {
-			if strings.HasSuffix(k, "or") {
-				k = strings.ReplaceAll(k, "or", "")
-				query.Or(k, v)
-			} else {
-				query.Where(k, v)
-			}
-		}
-	}
-	if err := query.Count(&total).Error; err != nil {
-		return total != 0, err
-	}
-	return total != 0, nil
 
 }

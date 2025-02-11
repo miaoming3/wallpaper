@@ -99,8 +99,8 @@ func (admin *AdminServer) ChangeInfo(c *gin.Context, data *dto.ChangeAdminInfo) 
 	if err != nil {
 		return response.ApiError(message.NotFoundError, err)
 	}
-	ok, err := dao.NewAdminDao().UniqueFiled(map[string]interface{}{
-		"id != ":         condition,
+	total, err := dao.NewAdminDao().GetTotal(map[string]interface{}{
+		"id != ? ":       c.GetInt("uid"),
 		"username != ? ": data.Username,
 		"or email != ?":  data.Email,
 		"or phone != ?":  data.Phone,
@@ -108,7 +108,7 @@ func (admin *AdminServer) ChangeInfo(c *gin.Context, data *dto.ChangeAdminInfo) 
 	if err != nil {
 		return response.ApiError(message.NotFoundError, err)
 	}
-	if ok {
+	if total > 0 {
 		return response.ApiError(message.NotFoundError, err)
 	}
 
