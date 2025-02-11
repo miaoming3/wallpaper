@@ -4,6 +4,7 @@ import (
 	"github.com/miaoming3/wallpaper/app/global"
 	"github.com/miaoming3/wallpaper/app/models"
 	"gorm.io/gorm"
+	"strings"
 )
 
 type AdminDao struct {
@@ -21,9 +22,14 @@ func (dao *AdminDao) FindByName(username string, status int) (admin *models.Admi
 	return
 }
 
-func (dao *AdminDao) FindById(uid int, status int) (admin *models.AdminModel, err error) {
-
-	if err = dao.Model(&models.AdminModel{}).Where("id = ? and status = ?", uid, status).First(&admin).Error; err != nil {
+func (dao *AdminDao) FindById(condition map[string]interface{}) (admin *models.AdminModel, err error) {
+	query := dao.Model(&models.AdminModel{})
+	if len(condition) > 0 {
+		for k, v := range condition {
+			query.Where(k, v)
+		}
+	}
+	if err = query.First(&admin).Error; err != nil {
 		return &models.AdminModel{}, err
 	}
 	return
@@ -44,12 +50,51 @@ func (dao *AdminDao) GetList(condition map[string]interface{}, page int, pageSiz
 			query.Where(k, v)
 		}
 	}
-	if pageSize == 0 {
-		pageSize = 20
-	}
 
-	if err = query.Offset(page).Limit(pageSize).Find(&adminModel).Error; err != nil {
+	if err = query.Offset(page - 1).Limit(pageSize).Find(&adminModel).Error; err != nil {
 		return nil, err
 	}
 	return
+}
+func (dao *AdminDao) GetTotal(condition map[string]interface{}) (total int64, err error) {
+	query := dao.Model(&models.AdminModel{})
+	if len(condition) > 0 {
+		for k, v := range condition {
+			query.Where(k, v)
+		}
+	}
+
+	if err = query.Count(&total).Error; err != nil {
+		return 0, err
+	}
+	return
+}
+
+func (dao *AdminDao) DeleteRow(id int, forever bool, adminModel *models.AdminModel) error {
+	query := dao.Model(&models.AdminModel{})
+	if forever {
+		query.Unscoped()
+	}
+	return query.Delete(&adminModel, id).Error
+
+}
+
+func (dao *AdminDao) UniqueFiled(condition map[string]interface{}) (bool, error) {
+	var total int64
+	query := dao.Model(&models.AdminModel{})
+	if len(condition) > 0 {
+		for k, v := range condition {
+			if strings.HasSuffix(k, "or") {
+				k = strings.ReplaceAll(k, "or", "")
+				query.Or(k, v)
+			} else {
+				query.Where(k, v)
+			}
+		}
+	}
+	if err := query.Count(&total).Error; err != nil {
+		return total != 0, err
+	}
+	return total != 0, nil
+
 }

@@ -33,3 +33,7 @@ type AdminSearch struct {
 	Username string `json:"username" form:"username" uri:"username" `
 	Status   string `json:"status" form:"status" uri:"status"`
 }
+
+type AdminDel struct {
+	ID int `json:"id" form:"id" uri:"id" binding:"required"`
+}

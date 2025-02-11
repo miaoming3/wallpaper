@@ -25,6 +25,10 @@ instance.interceptors.response.use(
         return  response.data
 
     },error=>{
+       if (error.code ==="ERR_NETWORK"){
+           ElMessage.error("网络错误")
+           return 
+       }
         if (error.response.data.code ==401 && error.status==401){
             ElMessage.error("授权过期,3s后请重新登录")
             setTimeout(function (){

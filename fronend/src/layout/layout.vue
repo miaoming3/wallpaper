@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import {onMounted, provide, reactive, ref, watch} from 'vue'
-import { useRouter } from 'vue-router';
+import {onBeforeUpdate, onMounted, provide, reactive, ref, watch} from 'vue'
+import {useRoute, useRouter} from 'vue-router';
 import Aside from "@/components/aside.vue";
 import Header from "@/components/header.vue";
 import Footer from "@/components/footer.vue";
 import {getAdminInfo} from "@/assets/api/admin";
-const chooseHeader = window.location.pathname;
+const route = useRoute();
+const chooseHeader = route.path
 // 创建一个响应式引用并初始化为当前页面的路径
 const activeIndex = ref<string>(chooseHeader);
 const router = useRouter();
@@ -21,17 +22,21 @@ const adminInfo =reactive({
 provide("adminInfo",adminInfo)
 
 // 监听路由变化并更新 activeIndex
-onMounted(async () => {
+
+function onCreated(param: () => Promise<void>) {
+  getAdminInfo().then((res)=>{
+    if(res.code===0) {
+      Object.assign(adminInfo, res.data)
+    }
+  }).catch((e)=>{
+    console.error("Failed to fetch admin info:", e);
+  })
+}
+
+onCreated(async () => {
   watch(() => router.currentRoute.value.path,
       (newPath) => {activeIndex.value = newPath;});
-  try {
-    const data = await getAdminInfo();
-    if (data && data.data) {
-      Object.assign(adminInfo,data.data)
-    }
-  } catch (error) {
-    console.error("Failed to fetch admin info:", error);
-  }
+
 });
 </script>
 <template>

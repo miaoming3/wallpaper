@@ -1,4 +1,6 @@
 import instance from "@/request/request";
+import {UnwrapRef} from "vue";
+import {RouteParamValue} from "vue-router";
 
 
 export function Login(data: any){
@@ -45,4 +47,20 @@ export  function  getAdminList(data:any){
          method:"get",
          params:data
      })
+}
+
+export  function delAdmin(id:number){
+    return instance({
+        "url":"api/v1/admin/delete",
+        "method":"delete",
+        data: { id },
+    })
+}
+
+export  function getAdminById(id: UnwrapRef<string | RouteParamValue[]>){
+    return instance({
+        "url":`api/v1/admin/detail`,
+        "method":"get",
+        params:{"id":id}
+    })
 }

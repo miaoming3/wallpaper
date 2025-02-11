@@ -31,6 +31,10 @@ const routes: Array<RouteRecordRaw> = [
       name:"adminIndex",
       component:import('../views/admin/Index.vue')
     },{
+      path:"update/:id",
+      name:"adminUpdate",
+      component:import('../views/admin/Edit.vue')
+    },{
       path:"changePassword",
       name:"changePassword",
       component:import('../views/admin/Change-password.vue')
