@@ -15,15 +15,8 @@ func NewAdminDao() *AdminDao {
 	return &AdminDao{global.DbClient}
 }
 
-func (dao *AdminDao) FindByName(username string, status int) (admin *models.AdminModel, err error) {
-	if err = dao.Model(&models.AdminModel{}).Where("username =? and status= ?", username, status).First(&admin).Error; err != nil {
-		return &models.AdminModel{}, err
-	}
-	return
-}
-
 func (dao *AdminDao) getQuery(condition map[string]interface{}) (query *gorm.DB) {
-	query = dao.Model(&models.AdminModel{})
+	query = dao.GetModel()
 	if len(condition) > 0 {
 		for k, v := range condition {
 			if strings.HasPrefix(k, "or") {
@@ -37,6 +30,17 @@ func (dao *AdminDao) getQuery(condition map[string]interface{}) (query *gorm.DB)
 	return
 }
 
+func (dao *AdminDao) GetModel() *gorm.DB {
+	return dao.Model(&models.AdminModel{})
+}
+
+func (dao *AdminDao) FindByName(username string, status int) (admin *models.AdminModel, err error) {
+	if err = dao.GetModel().Where("username =? and status= ?", username, status).First(&admin).Error; err != nil {
+		return &models.AdminModel{}, err
+	}
+	return
+}
+
 func (dao *AdminDao) FindById(condition map[string]interface{}) (admin *models.AdminModel, err error) {
 
 	if err = dao.getQuery(condition).First(&admin).Error; err != nil {
@@ -46,11 +50,11 @@ func (dao *AdminDao) FindById(condition map[string]interface{}) (admin *models.A
 }
 
 func (dao *AdminDao) UpdateCol(col string, val interface{}, adminModel *models.AdminModel) error {
-	return dao.Model(&models.AdminModel{}).Where("id =? and status= ?", adminModel.ID, adminModel.Status).Update(col, val).Error
+	return dao.GetModel().Where("id =? and status= ?", adminModel.ID, adminModel.Status).Update(col, val).Error
 }
 
 func (dao *AdminDao) UpdateCols(admin *models.AdminModel) error {
-	return dao.Model(&models.AdminModel{}).Where("id = ?", admin.ID).Updates(&admin).Error
+	return dao.GetModel().Where("id = ?", admin.ID).Updates(&admin).Error
 }
 
 func (dao *AdminDao) GetList(condition map[string]interface{}, page int, pageSize int) (adminModel []*models.AdminModel, err error) {
@@ -67,7 +71,7 @@ func (dao *AdminDao) GetTotal(condition map[string]interface{}) (total int64, er
 }
 
 func (dao *AdminDao) DeleteRow(id int, forever bool, adminModel *models.AdminModel) error {
-	query := dao.Model(&models.AdminModel{})
+	query := dao.GetModel()
 	if forever {
 		query.Unscoped()
 	}
