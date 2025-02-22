@@ -7,5 +7,5 @@ type UploadFile struct {
 }
 
 type UploadFileMust struct {
-	File []multipart.FileHeader `form:"file"`
+	File []*UploadFile `form:"file"`
 }

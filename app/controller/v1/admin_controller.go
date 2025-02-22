@@ -2,10 +2,10 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/app/core/server"
+	"github.com/miaoming3/wallpaper/app/dto"
 	"github.com/miaoming3/wallpaper/app/message"
-	"github.com/miaoming3/wallpaper/app/message/dto"
 	"github.com/miaoming3/wallpaper/app/response"
+	"github.com/miaoming3/wallpaper/app/server"
 )
 
 type AdminController struct {
@@ -51,7 +51,13 @@ func (admin *AdminController) Index(c *gin.Context) {
 	response.Response(c, server.NewAdminServer().List(c, &adminSearch))
 }
 func (admin *AdminController) Created(c *gin.Context) {
+	var adminData dto.AdminCreated
 
+	if err := c.ShouldBind(&adminData); err != nil {
+		response.Response(c, response.ApiError(message.CLIENTERROR, err))
+		return
+	}
+	response.Response(c, server.NewAdminServer().Created(c, &adminData))
 }
 
 // ChangeInfo 修改个人资料
@@ -66,7 +72,13 @@ func (admin *AdminController) ChangeInfo(c *gin.Context) {
 }
 
 func (admin *AdminController) Updated(c *gin.Context) {
+	var adminData dto.AdminUpdate
 
+	if err := c.ShouldBind(&adminData); err != nil {
+		response.Response(c, response.ApiError(message.CLIENTERROR, err))
+		return
+	}
+	response.Response(c, server.NewAdminServer().Update(c, &adminData))
 }
 
 // Delete  删除管理员

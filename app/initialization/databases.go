@@ -62,7 +62,7 @@ func InitDataBases() {
 
 func autoMigrate() {
 	_ = global.DbClient.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
-		&models.AdminModel{},
+		&models.AdminModel{}, &models.Menu{}, &models.Rule{}, &models.Role{},
 	)
 	pwdbyte, _ := bcrypt.GenerateFromPassword([]byte("dx067870"), bcrypt.DefaultCost)
 	global.DbClient.Model(&models.AdminModel{}).Where("id = ? and status= ?", 1, 1).FirstOrCreate(&models.AdminModel{

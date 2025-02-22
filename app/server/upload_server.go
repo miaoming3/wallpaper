@@ -1,10 +1,10 @@
 package server
 
 import (
+	"github.com/miaoming3/wallpaper/app/dro"
+	"github.com/miaoming3/wallpaper/app/dto"
 	"github.com/miaoming3/wallpaper/app/global"
 	"github.com/miaoming3/wallpaper/app/message"
-	"github.com/miaoming3/wallpaper/app/message/dro"
-	"github.com/miaoming3/wallpaper/app/message/dto"
 	response2 "github.com/miaoming3/wallpaper/app/response"
 	"github.com/miaoming3/wallpaper/app/utils"
 	"net/http"
@@ -60,7 +60,7 @@ func (us *UploadServer) UploadsFileMust(c *gin.Context, file *dto.UploadFileMust
 		}
 	}
 	for k, v := range file.File {
-		ext := filepath.Ext(v.Filename)
+		ext := filepath.Ext(v.File.Filename)
 		if !us.IsExtensionAllowed(ext) {
 			updateResponse = append(updateResponse, dro.UploadResponseData{
 				Code:  message.UploadNotSupportExt,
@@ -70,7 +70,7 @@ func (us *UploadServer) UploadsFileMust(c *gin.Context, file *dto.UploadFileMust
 			})
 			continue
 		}
-		if v.Size > global.SysConfig.UploadFileSize {
+		if v.File.Size > global.SysConfig.UploadFileSize {
 			updateResponse = append(updateResponse, dro.UploadResponseData{
 				Code:  message.UploadMaxSize,
 				Error: nil,
@@ -91,7 +91,7 @@ func (us *UploadServer) UploadsFileMust(c *gin.Context, file *dto.UploadFileMust
 			continue
 		}
 		saveFileName := filepath.Join(uploadDir, uuid.New().String()+ext)
-		if err := c.SaveUploadedFile(&v, saveFileName); err != nil {
+		if err := c.SaveUploadedFile(&v.File, saveFileName); err != nil {
 			updateResponse = append(updateResponse, dro.UploadResponseData{
 				Code:  message.UploadSaveError,
 				Error: err,
@@ -104,7 +104,7 @@ func (us *UploadServer) UploadsFileMust(c *gin.Context, file *dto.UploadFileMust
 			Code: http.StatusOK,
 			Msg:  "Success",
 			Path: saveFileName,
-			Salt: utils.Md5(v.Filename),
+			Salt: utils.Md5(v.File.Filename),
 			Key:  k + 1,
 			Url:  utils.RemoteUrl(c, saveFileName),
 			Host: utils.RemoteUrl(c, ""),

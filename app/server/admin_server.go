@@ -3,11 +3,12 @@ package server
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/app/core/dao"
+	"github.com/miaoming3/wallpaper/app/dao"
+	"github.com/miaoming3/wallpaper/app/dro"
+	"github.com/miaoming3/wallpaper/app/dto"
 	"github.com/miaoming3/wallpaper/app/global"
 	"github.com/miaoming3/wallpaper/app/message"
-	"github.com/miaoming3/wallpaper/app/message/dro"
-	"github.com/miaoming3/wallpaper/app/message/dto"
+	"github.com/miaoming3/wallpaper/app/models"
 	"github.com/miaoming3/wallpaper/app/response"
 	"github.com/miaoming3/wallpaper/app/utils"
 	"strconv"
@@ -91,27 +92,18 @@ func (admin *AdminServer) ChangePassword(c *gin.Context, data *dto.ChangePasswor
 }
 
 func (admin *AdminServer) ChangeInfo(c *gin.Context, data *dto.ChangeAdminInfo) *response.APi {
+	uid := c.GetInt("uid")
 	condition := map[string]interface{}{
-		"id":     c.GetInt("uid"),
+		"id":     uid,
 		"status": 1,
 	}
 	adminModel, err := dao.NewAdminDao().FindById(condition)
 	if err != nil {
 		return response.ApiError(message.NotFoundError, err)
 	}
-	total, err := dao.NewAdminDao().GetTotal(map[string]interface{}{
-		"id != ? ":       c.GetInt("uid"),
-		"username != ? ": data.Username,
-		"or email != ?":  data.Email,
-		"or phone != ?":  data.Phone,
-	})
-	if err != nil {
-		return response.ApiError(message.NotFoundError, err)
+	if ok, err := admin.UniqueFindFiled(data, uid); !ok {
+		return err
 	}
-	if total > 0 {
-		return response.ApiError(message.NotFoundError, err)
-	}
-
 	adminModel.Username = data.Username
 	adminModel.Email = data.Email
 	adminModel.Phone = data.Phone
@@ -209,4 +201,59 @@ func (admin *AdminServer) AdminInfo(c *gin.Context, data *dto.AdminDel) *respons
 		Avatar:    adminModel.Avatar,
 		CreatedAt: adminModel.CreatedAt.Format(time.DateTime),
 	})
+}
+
+func (admin *AdminServer) UniqueFindFiled(data interface{}, id int) (bool, *response.APi) {
+
+	return true, response.ApiError(message.UniqueFindFiledError, nil)
+
+}
+
+func (admin *AdminServer) Update(c *gin.Context, data *dto.AdminUpdate) *response.APi {
+	uid := c.GetInt("uid")
+	if (uid != 1 && uid != data.ID) || (data.ID == 1) {
+		return response.ApiError(message.NotFoundError, nil)
+	}
+	condition := map[string]interface{}{
+		"id": data.ID,
+	}
+	adminModel, err := dao.NewAdminDao().FindById(condition)
+	if err != nil {
+		return response.ApiError(message.NotFoundError, err)
+	}
+	if ok, err := admin.UniqueFindFiled(data, data.ID); !ok {
+		return err
+	}
+	if !utils.ComparePoserPassword(adminModel.Password, data.Password) {
+		adminModel.Password, _ = utils.GeneratePassword(data.Password)
+	}
+	adminModel.Username = data.Username
+	adminModel.Email = data.Email
+	adminModel.Phone = data.Phone
+	adminModel.Status = adminModel.StatusUint(data.Status)
+
+	if err = dao.NewAdminDao().UpdateCols(adminModel); err != nil {
+		return response.ApiError(message.AdminChangeError, err)
+	}
+
+	return response.ApiSuccess(nil)
+}
+
+func (admin *AdminServer) Created(c *gin.Context, data *dto.AdminCreated) *response.APi {
+	if ok, err := admin.UniqueFindFiled(data, 0); !ok {
+		return err
+	}
+	adminModel := &models.AdminModel{
+		Username: data.Username,
+		Phone:    data.Phone,
+		Email:    data.Email,
+		Avatar:   data.Avatar,
+	}
+	adminModel.Password, _ = utils.GeneratePassword(data.Password)
+	adminModel.Status = adminModel.StatusUint(data.Status)
+	if err := dao.NewAdminDao().Create(&adminModel).Error; err != nil {
+		return response.ApiError(message.CreatedError, err)
+	}
+
+	return response.ApiSuccess(nil)
 }

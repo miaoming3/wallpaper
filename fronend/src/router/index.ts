@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import LoginView from '../views/login/Index.vue'
 import LayoutView from "@/layout/layout.vue";
+import {Vue} from "vue-class-component";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,34 +22,38 @@ const routes: Array<RouteRecordRaw> = [
     children:[{
       path:"",
       name:"dash",
-      component:import('../views/dash/Index.vue')
+      component:()=>import('@/views/dash/Index.vue')
     },{
       path:"info",
       name:"adminInfo",
-      component:import('../views/admin/Info.vue')
+      component:()=>import('@/views/admin/Info.vue')
     },{
       path:"index",
       name:"adminIndex",
-      component:import('../views/admin/Index.vue')
+      component:()=>import('@/views/admin/Index.vue')
     },{
       path:"update/:id",
       name:"adminUpdate",
-      component:import('../views/admin/Edit.vue')
+      component:()=>import('@/views/admin/Edit.vue')
+    },{
+      path:"save",
+      name:"adminUpdate",
+      component:()=>import('@/views/admin/Edit.vue')
     },{
       path:"changePassword",
       name:"changePassword",
-      component:import('../views/admin/Change-password.vue')
+      component:()=>import('@/views/admin/Change-password.vue')
     },{
       path:"setting",
       name:"setting",
-      component:import('../views/setting/Index.vue')
+      component:()=>import('@/views/setting/Index.vue')
     },{
       path:"user",
       name:"user",
       children:[{
         path:"index",
         name:"UserIndex",
-        component:import('../views/user/Index.vue')
+        component:()=>import('@/views/user/Index.vue')
       }]
     },{
       path:"category",
@@ -56,7 +61,7 @@ const routes: Array<RouteRecordRaw> = [
       children:[{
         path:"index",
         name:"categoryIndex",
-        component:import('../views/category/Index.vue')
+        component:()=>import('@/views/category/Index.vue')
       }]
     },{
       path:"img",
@@ -64,11 +69,11 @@ const routes: Array<RouteRecordRaw> = [
       children:[{
         path:"index",
         name:"imgIndex",
-        component:import('../views/images/Index.vue')
+        component:()=>import('@/views/images/Index.vue')
       },{
         path:"tags",
         name:"imgTags",
-        component:import('../views/tags/Index.vue')
+        component:()=>import('@/views/tags/Index.vue')
       }]
     },{
       path:"menu",
@@ -76,13 +81,15 @@ const routes: Array<RouteRecordRaw> = [
       children:[{
         path:"index",
         name:"MenuIndex",
-        component:import('../views/menu/Index.vue')
+        component:()=>import('@/views/menu/Index.vue')
       }]
     }]
-  }
+  },
+  { path: '/404', name: 'NoPage404', component:()=> import("@/views/404.vue") },
+  { path: '/:pathMatch(.*)*', redirect: '/404' }
 ]
 
-const router = createRouter({
+const router =createRouter ({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })

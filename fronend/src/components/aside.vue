@@ -25,7 +25,9 @@ const props = defineProps({
           <el-icon><Menu /></el-icon>
           <span>菜单管理</span>
         </template>
-        <el-menu-item index="/admin/menu/index">菜单管理</el-menu-item>
+        <el-menu-item index="/admin/menu/index">菜单列表</el-menu-item>
+        <el-menu-item index="/admin/menu/rule">权限列表</el-menu-item>
+        <el-menu-item index="/admin/menu/role">角色列表</el-menu-item>
       </el-sub-menu>
       <el-sub-menu index="/user">
         <template #title>

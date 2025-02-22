@@ -5,16 +5,6 @@ import {delAdmin, getAdminList} from "@/assets/api/admin";
 import {ElMessageBox, ElNotification} from "element-plus";
 import router from "@/router";
 const loading = ref(true)
-const svg = `
-        <path class="path" d="
-          M 30 15
-          L 28 17
-          M 25.61 25.61
-          A 15 15, 0, 0, 1, 15 30
-          A 15 15, 0, 1, 1, 27.99 7.5
-          L 15 15
-        " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
-      `
 const  adminData = ref([])
 const  page = ref({
   total:0,
@@ -55,7 +45,7 @@ const  handleEdit=(index:number, row:object)=>{
 }
 
 const handleDelete=  (index:number, row:object) =>{
-  ElMessageBox.confirm("确定要删除数据").then( async ()=>{
+  ElMessageBox.confirm("确定要删除数据",{  confirmButtonText: '确定', cancelButtonText: '取消',}).then( async ()=>{
     loading.value=true
     const res =  await  delAdmin(row.id)
     if (res.code ==0){
@@ -71,6 +61,9 @@ const handleCurrentChange = (val: number) => {
 }
 const onSearch =  ()=>{
   adminList(searchFrom,1)
+}
+const  onSave=()=>{
+   router.push({"path":"/admin/save"})
 }
 const  adminList =async (data:any, val:number)=>{
   try {
@@ -118,12 +111,13 @@ const  adminList =async (data:any, val:number)=>{
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSearch">查询</el-button>
+          <el-button type="primary" @click="onSave">新增</el-button>
         </el-form-item>
       </el-form>
+
     <el-table
         v-loading="loading"
         element-loading-text="Loading..."
-        :element-loading-spinner="svg"
         element-loading-svg-view-box="-10, -10, 50, 50"
         element-loading-background="rgba(122, 122, 122, 0.8)"
         :data="adminData"
@@ -143,10 +137,10 @@ const  adminList =async (data:any, val:number)=>{
           <img :src="scope.row.img_url" alt="头像" style="max-height: 30px">
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="180">
         <template  #default="scope">
-          <el-button  type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-          <el-button  type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button size="small"  type="primary" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+          <el-button  size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
 
       </el-table-column>

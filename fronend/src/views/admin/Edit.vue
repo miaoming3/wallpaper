@@ -3,7 +3,7 @@ import {inject, onMounted, reactive, ref, watch} from 'vue';
 import { ArrowRight, Plus } from '@element-plus/icons-vue';
 import type { UploadProps } from 'element-plus';
 import {ElForm, ElMessage} from 'element-plus';
-import {ChangeInfo, getAdminById} from "@/assets/api/admin";
+import {AdminSave, AdminUpdate, ChangeInfo, getAdminById} from "@/assets/api/admin";
 import {useRoute } from "vue-router";
 import router from "@/router";
 const  rules = reactive({
@@ -69,15 +69,15 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 
 const onSubmit = async () => {
   try {
-    if (!formRef.value) return
-    const isValid = await formRef.value.validate();
-    if (!isValid) return;
-    const res = await ChangeInfo(localAdminInfo)
-    if (res.code === 0){
-      ElMessage.success(res.msg)
+    if ((!formRef.value)  || !(await formRef.value.validate())) return
+    if(localAdminInfo.id==""){
+      let res = await AdminSave(localAdminInfo)
+      res.code === 0?ElMessage.success(res.msg):ElMessage.error(res.msg)
     }else{
-      ElMessage.error(res.msg)
+      let res = await AdminUpdate(localAdminInfo)
+      res.code === 0?ElMessage.success(res.msg):ElMessage.error(res.msg)
     }
+
   }catch (e) {
     if(e.message)ElMessage.error("网络错误")
   }
@@ -89,7 +89,7 @@ const onSubmit = async () => {
     <el-breadcrumb :separator-icon="ArrowRight">
       <el-breadcrumb-item :to="{ path: '/admin' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item >管理员列表</el-breadcrumb-item>
-      <el-breadcrumb-item>{{id?"编辑":"添加"}}</el-breadcrumb-item>
+      <el-breadcrumb-item>编辑</el-breadcrumb-item>
     </el-breadcrumb>
     <el-form :model="localAdminInfo" label-width="120px" class="info-form" size="large" ref="formRef" :rules="rules">
       <el-form-item label="用户名" prop="username">

@@ -65,5 +65,8 @@ func ApiPageSuccess(data interface{}, total int64, page int, size int, next bool
 }
 
 func Response(c *gin.Context, response *APi) {
+	if response.Code == message.CLIENTERROR {
+		response.Msg = message.GetErrorMsg(response.Err)
+	}
 	c.JSON(http.StatusOK, response)
 }

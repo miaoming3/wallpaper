@@ -2,10 +2,10 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/miaoming3/wallpaper/app/core/server"
+	"github.com/miaoming3/wallpaper/app/dto"
 	"github.com/miaoming3/wallpaper/app/message"
-	"github.com/miaoming3/wallpaper/app/message/dto"
 	"github.com/miaoming3/wallpaper/app/response"
+	"github.com/miaoming3/wallpaper/app/server"
 )
 
 type UploadController struct {

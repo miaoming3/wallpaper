@@ -23,6 +23,8 @@ const (
 	FoundSUCCESS
 	DeleteError
 	NotFoundCategory
+	CreatedError
+	UniqueFindFiledError
 
 	//图片错误
 
@@ -36,13 +38,15 @@ const (
 )
 
 var messageTxt = map[uint]string{
-	ACCESSERROR:      "服务器内部错误",
-	CLIENTERROR:      "客户端错误",
-	CAPTCHAERROR:     "验证码错误",
-	Unauthorized:     "用户未授权",
-	ADMINORPASSWORD:  "用户名或密码错误",
-	AdminStatusNone:  "超级管理员不能禁用状态",
-	AdminChangeError: "修改失败",
+	ACCESSERROR:          "服务器内部错误",
+	CLIENTERROR:          "客户端错误",
+	CAPTCHAERROR:         "验证码错误",
+	Unauthorized:         "用户未授权",
+	ADMINORPASSWORD:      "用户名或密码错误",
+	AdminStatusNone:      "超级管理员不能禁用状态",
+	AdminChangeError:     "修改失败",
+	CreatedError:         "创建失败",
+	UniqueFindFiledError: "数据存在",
 
 	CategoryNameErr:     "分类名已经存在",
 	SaveCategoryErr:     "保存失败",

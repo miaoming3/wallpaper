@@ -34,6 +34,20 @@ export  function  ChangePassword(data:any){
     })
 }
 
+export  function  AdminUpdate(data :any){
+    return instance({
+        url:"api/v1/admin/admin/updated",
+        method:"post",
+        data
+    })
+}export  function  AdminSave(data :any){
+    return instance({
+        url:"/api/v1/admin/created",
+        method:"post",
+        data
+    })
+}
+
 export function Logout(){
     return instance({
         url:"/api/v1/admin/logout",
